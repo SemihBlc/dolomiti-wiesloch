@@ -2,209 +2,397 @@
 import Layout from "../layouts/Layout.astro";
 import { d } from "../data";
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const img = (src: string) => src.startsWith("http") ? src : `${base}/${src}`;
 const fonts =
-  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap";
-// Jagged Dolomiten-Kammlinie (wiederkehrendes Markenmotiv)
-const ridge =
-  "M0,200 L0,128 L120,52 L210,118 L320,34 L450,120 L560,58 L690,128 L820,40 L960,116 L1080,62 L1200,104 L1200,200 Z";
+  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&display=swap";
+const site = Astro.site?.href.replace(/\/$/, "") ?? "https://semihblc.github.io";
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "IceCreamShop",
+  name: `${d.name} Wiesloch`,
+  image: [`${site}${base}/fotos/hero.jpg`, `${site}${base}/fotos/nasenschild.jpg`],
+  telephone: "+4962221362",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Hauptstraße 72",
+    postalCode: "69168",
+    addressLocality: "Wiesloch",
+    addressCountry: "DE",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.6",
+    reviewCount: d.reviews,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "22:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Sunday",
+      opens: "10:00",
+      closes: "22:00",
+    },
+  ],
+};
 ---
 
 <Layout title={`${d.name} Wiesloch — Hausgemachtes Eis & italienisches Bistro`} fonts={fonts}>
-  <main class="min-h-svh overflow-x-hidden bg-[#f2ebdd] text-[#23291f] antialiased [font-family:Inter,sans-serif] pb-20 sm:pb-0">
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <main class="min-h-svh overflow-x-hidden bg-[#fff8ea] text-[#253026] antialiased [font-family:Inter,sans-serif] pb-20 sm:pb-0">
     <!-- Header -->
-    <header class="sticky top-0 z-30 border-b border-[#23291f]/10 bg-[#f2ebdd]/85 backdrop-blur">
-      <div class="mx-auto flex max-w-5xl items-center justify-between px-5 py-3.5">
-        <span class="flex items-center gap-2">
-          <svg viewBox="0 0 28 18" class="h-4 w-6 text-[#2f5141]" fill="currentColor" aria-hidden="true"><path d="M0 18 L8 4 L13 11 L18 2 L28 18 Z"/></svg>
+    <header class="sticky top-0 z-40 border-b border-[#253026]/10 bg-[#fff8ea]/86 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
+        <a href="#top" class="flex items-center gap-2.5" aria-label="Dolomiti Startseite">
+          <span class="grid size-8 place-items-center rounded-full bg-[#7eb6c9] text-sm font-black text-white shadow-sm">D</span>
           <span class="ds text-2xl leading-none font-semibold tracking-tight">Dolomiti</span>
-        </span>
-        <a href={d.telHref} class="rounded-full bg-[#a8481f] px-4 py-2 text-sm font-semibold text-[#f2ebdd] transition hover:bg-[#8d3a16]">Anrufen</a>
+        </a>
+        <nav class="hidden items-center gap-7 text-sm font-semibold text-[#5d594d] md:flex" aria-label="Navigation">
+          <a class="hover:text-[#b24b25]" href="#fotos">Fotos</a>
+          <a class="hover:text-[#b24b25]" href="#familie">Familie</a>
+          <a class="hover:text-[#b24b25]" href="#angebot">Angebot</a>
+          <a class="hover:text-[#b24b25]" href="#kontakt">Kontakt</a>
+        </nav>
+        <a href={d.telHref} class="rounded-full bg-[#b24b25] px-4 py-2 text-sm font800 font-semibold text-white shadow-sm transition hover:bg-[#973d1c]">Anrufen</a>
       </div>
     </header>
 
     <!-- Hero -->
-    <section class="relative isolate overflow-hidden">
-      <!-- Berg-Kammlinie als dezenter Backdrop -->
-      <svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 w-full text-[#2f5141]/8"><path d={ridge} fill="currentColor"/></svg>
+    <section id="top" class="relative isolate overflow-hidden border-b border-[#253026]/10">
+      <div class="sun-disc pointer-events-none absolute right-[-8rem] top-10 -z-10 size-72 rounded-full bg-[#ffd66b]/35 blur-2xl"></div>
+      <div class="wave pointer-events-none absolute inset-x-0 top-0 -z-10 h-52 opacity-90"></div>
 
-      <div class="hero-stagger mx-auto max-w-5xl px-5 pt-12 pb-14 text-center sm:pt-16">
-        <p class="text-xs font-semibold tracking-[0.28em] text-[#a8481f] uppercase">Eiscafé &amp; Bistro · Wiesloch</p>
-        <h1 class="mt-5">
-          <span class="ds block text-lg font-medium tracking-[0.4em] text-[#2f5141] uppercase">Eiscafé</span>
-          <span class="glow-text ds block text-7xl leading-[0.92] font-black tracking-tight sm:text-9xl">Dolomiti</span>
-        </h1>
-        <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-[#5b5345]">
-          Hausgemachtes Gelato, <span class="ds font-semibold italic text-[#a8481f]">Spaghettieis</span> und italienische Küche — Eis und Bistro unter einem Dach, mitten an der Hauptstraße.
-        </p>
+      <div class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-8 sm:gap-10 sm:py-16 lg:grid-cols-[0.88fr_1.12fr] lg:py-20">
+        <div class="hero-stagger max-w-xl text-left">
+          <p class="text-xs font-extrabold tracking-[0.28em] text-[#b24b25] uppercase">Sommer · Eis · Wiesloch</p>
+          <h1 class="ds mt-4 text-[3.25rem] leading-[0.93] font-black tracking-tight sm:mt-5 sm:text-7xl lg:text-8xl">
+            Ein Eis wie Kurzurlaub. <span class="text-[#5aa5bc]">Mitten</span> in Wiesloch.
+          </h1>
+          <p class="mt-5 text-base leading-relaxed text-[#5d594d] sm:mt-6 sm:text-xl">
+            Spaghettieis, Waffeln, Cappuccino und italienische Küche — Kinder mit Eis,
+            Eltern mit Caffè, kurz Sommer fühlen. Bei <strong class="text-[#253026]">Manuel &amp; Team</strong> in der Hauptstraße.
+          </p>
 
-        <div class="mt-7 inline-flex items-center gap-2.5 rounded-full border border-[#2f5141]/25 bg-[#2f5141]/10 px-4 py-2 text-sm font-medium text-[#2f5141]">
-          <span class="size-2 rounded-full bg-[#2f5141]"></span>
-          <span>Eiscafé-Saison · täglich geöffnet</span>
+          <div class="mt-6 hidden flex-wrap gap-2.5 text-sm font-semibold text-[#315949] sm:flex">
+            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Mit Kindern entspannt</span>
+            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Eis &amp; Caffè draußen</span>
+            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Hauptstraße 72</span>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3 sm:mt-8">
+            <a href={d.telHref} class="rounded-full bg-[#b24b25] px-8 py-4 font-semibold text-white shadow-[0_14px_30px_-14px_rgba(178,75,37,.8)] transition hover:-translate-y-0.5 hover:bg-[#973d1c]">Einfach anrufen</a>
+            <a href={d.mapsUrl} target="_blank" rel="noopener" class="rounded-full border border-[#253026]/18 bg-white/45 px-8 py-4 font-semibold transition hover:-translate-y-0.5 hover:border-[#7eb6c9] hover:text-[#2f6d80]">Route öffnen</a>
+          </div>
+
+          <div class="quick-facts mt-7 hidden gap-2.5 sm:grid sm:grid-cols-3" aria-label="Schnellinfos">
+            {d.schnell.map(([label, value]) => (
+              <div class="rounded-2xl border border-[#253026]/10 bg-white/58 px-4 py-3 shadow-[0_16px_32px_-28px_rgba(37,48,38,.6)]">
+                <p class="text-[0.68rem] font-extrabold tracking-[0.18em] text-[#b24b25] uppercase">{label}</p>
+                <p class="mt-1 font-semibold text-[#253026]">{value}</p>
+              </div>
+            ))}
+          </div>
+
+          <p class="mt-5 text-sm text-[#5d594d] sm:mt-6">
+            <span class="text-[#c6943a]">★★★★★</span> <strong class="font-semibold text-[#253026]">{d.rating}</strong> · {d.reviews} Google-Bewertungen
+          </p>
         </div>
 
-        <div class="mt-9 flex flex-wrap justify-center gap-3">
-          <a href={d.telHref} class="rounded-full bg-[#a8481f] px-8 py-4 font-semibold text-[#f2ebdd] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8d3a16]">Einfach anrufen</a>
-          <a href={d.mapsUrl} target="_blank" rel="noopener" class="rounded-full border border-[#23291f]/20 px-8 py-4 font-semibold transition hover:-translate-y-0.5 hover:border-[#a8481f] hover:text-[#a8481f]">Route öffnen</a>
-        </div>
-
-        <p class="mt-7 text-sm text-[#5b5345]">
-          <span class="text-[#c6943a]">★★★★★</span> <strong class="font-semibold text-[#23291f]">{d.rating}</strong> · {d.reviews} Google-Bewertungen
-        </p>
-
-        <figure class="relative mx-auto mt-14 max-w-3xl overflow-hidden rounded-[2rem] shadow-[0_24px_60px_-18px_rgba(35,41,31,0.5)] ring-1 ring-[#23291f]/10">
-          <img src={`${base}/fotos/hero.jpg`} width="1600" height="900" alt="Spaghettieis mit Cappuccino auf der Terrasse vom Eiscafé Dolomiti" class="kenburns aspect-[16/9] w-full object-cover" fetchpriority="high" />
-          <figcaption class="absolute bottom-4 left-4 rounded-full bg-[#f2ebdd]/95 px-5 py-1.5 text-sm font-semibold text-[#a8481f] shadow ring-1 ring-[#23291f]/10">Spaghettieis · frisch gemacht</figcaption>
-        </figure>
+        <section id="fotos" class="relative" aria-label="Fotos zum Durchswipen">
+          <div class="mb-3 flex items-center justify-between gap-4">
+            <p class="text-sm font-bold text-[#315949]">Fotos zum Durchswipen</p>
+            <p class="hidden text-xs text-[#7b7160] sm:block">ziehen · klicken · wischen</p>
+          </div>
+          <div class="carousel group relative" data-carousel>
+            <div class="carousel-track" data-track>
+              {d.bilder.map((foto, i) => (
+                <figure class="carousel-slide" data-slide>
+                  <img src={img(foto.src)} width="1600" height="1067" alt={foto.alt} class="h-full w-full object-cover" fetchpriority={i === 0 ? "high" : "auto"} loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+                  <figcaption>{foto.label}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <button class="carousel-btn left-3" type="button" data-prev aria-label="Vorheriges Foto">‹</button>
+            <button class="carousel-btn right-3" type="button" data-next aria-label="Nächstes Foto">›</button>
+            <div class="carousel-dots" aria-label="Foto auswählen">
+              {d.bilder.map((_foto, i) => (
+                <button type="button" data-dot={i} aria-label={`Foto ${i + 1} anzeigen`} class={i === 0 ? "is-active" : ""}></button>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </section>
 
     <!-- Gelato-Farbleiste -->
-    <div class="border-y border-[#23291f]/10 bg-[#e8dcc4] py-4">
+    <div class="border-y border-[#253026]/10 bg-[#f4e7c9] py-4">
       <div class="marquee">
         <div class="marquee-track">
           {[...d.sorten, ...d.sorten].map(([name, c]) => (
-            <span class="ds inline-flex items-center gap-2.5 text-2xl font-semibold text-[#23291f]">
-              <span class="size-3 rounded-full ring-1 ring-[#23291f]/10" style={`background:${c}`}></span>{name}
-              <span class="px-3 text-[#a8481f]/40">◆</span>
+            <span class="ds inline-flex items-center gap-2.5 text-2xl font-semibold text-[#253026]">
+              <span class="size-3 rounded-full ring-1 ring-[#253026]/10" style={`background:${c}`}></span>{name}
+              <span class="px-3 text-[#d7a77d]">◆</span>
             </span>
           ))}
         </div>
       </div>
     </div>
 
-    <!-- Über / Manuel -->
-    <section data-reveal class="mx-auto max-w-4xl px-5 py-16 text-center">
-      <p class="text-xs font-semibold tracking-[0.22em] text-[#a8481f] uppercase">Bei uns am Tresen</p>
-      <h2 class="ds mt-4 text-4xl font-semibold sm:text-5xl">Eis machen wir mit Geduld.</h2>
-      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[#5b5345]">
-        Hausgemachtes Gelato, ein Teller Pasta oder eine Pizza, dazu ein echter Espresso — bei
-        <span class="font-semibold text-[#23291f]"> Manuel Morgado Morais</span> bekommt man beides an einem Ort.
-        Kommt vorbei, nehmt euch Zeit und genießt ein Stück Italien mitten in Wiesloch.
-      </p>
-      <p class="ds mt-5 text-3xl italic text-[#a8481f]">Manuel &amp; Team</p>
-    </section>
-
-    <!-- Eis & Bistro Karte -->
-    <section data-reveal class="border-t border-[#23291f]/10 bg-[#e8dcc4]">
-      <div class="mx-auto max-w-5xl px-5 py-16">
-        <p class="text-xs font-semibold tracking-[0.22em] text-[#a8481f] uppercase">Eis &amp; Bistro</p>
-        <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Was bei uns über die Theke geht</h2>
-        <p class="mt-3 max-w-2xl text-[#5b5345]">Vom Eisbecher bis zur Pizza — Eiscafé und italienische Küche unter einem Dach.</p>
-        <div class="mt-10 grid gap-x-12 gap-y-1 sm:grid-cols-2">
-          {d.karte.map(([t, desc]) => (
-            <div class="flex items-baseline gap-4 border-b border-dashed border-[#23291f]/15 py-4">
-              <span class="ds shrink-0 text-xl font-semibold text-[#2f5141]">{t}</span>
-              <span class="text-sm leading-snug text-[#5b5345]">{desc}</span>
-            </div>
-          ))}
-        </div>
-        <p class="mt-6 text-sm text-[#9a917f]">Auszug aus dem Angebot · Sorten, Gerichte &amp; Preise variieren saisonal</p>
+    <!-- Familie / Manuel -->
+    <section id="familie" data-reveal class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 lg:grid-cols-[0.95fr_1.05fr]">
+      <div class="rounded-[2rem] border border-[#253026]/10 bg-white/58 p-7 shadow-[0_20px_55px_-35px_rgba(37,48,38,.5)]">
+        <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Manuel &amp; Team</p>
+        <h2 class="ds mt-4 text-4xl font-semibold sm:text-5xl">Ein Ort, an dem man kurz hängen bleibt.</h2>
+        <p class="mt-6 text-lg leading-relaxed text-[#5d594d]">
+          Für den schnellen Eisbecher nach der Schule, den Cappuccino in der Sonne oder Pizza und Pasta am Abend:
+          Dolomiti ist ein kleiner Treffpunkt in der Hauptstraße — freundlich, unkompliziert und nah dran.
+        </p>
+        <p class="ds mt-6 text-3xl italic text-[#b24b25]">Manuel &amp; Team</p>
       </div>
-    </section>
-
-    <!-- Spezialitäten -->
-    <section data-reveal class="mx-auto max-w-5xl px-5 py-16">
-      <p class="text-xs font-semibold tracking-[0.22em] text-[#a8481f] uppercase">Warum Dolomiti</p>
-      <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Klein, aber unser Ding</h2>
-      <div class="mt-9 grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-4 sm:grid-cols-2">
         {d.spezial.map(([t, dd]) => (
-          <article class="rounded-2xl border border-[#23291f]/10 bg-[#f2ebdd] p-6 transition hover:-translate-y-1 hover:border-[#a8481f]/40">
-            <h3 class="ds text-2xl font-semibold text-[#2f5141]">{t}</h3>
-            <p class="mt-2 leading-relaxed text-[#5b5345]">{dd}</p>
+          <article class="rounded-[1.4rem] border border-[#253026]/10 bg-[#fffdf6] p-6 transition hover:-translate-y-1 hover:border-[#7eb6c9]/55 hover:shadow-[0_20px_40px_-28px_rgba(47,109,128,.55)]">
+            <h3 class="ds text-2xl font-semibold text-[#315949]">{t}</h3>
+            <p class="mt-2 leading-relaxed text-[#5d594d]">{dd}</p>
           </article>
         ))}
       </div>
     </section>
 
+    <!-- Eis & Bistro Karte -->
+    <section id="angebot" data-reveal class="border-y border-[#253026]/10 bg-[#fffdf6]">
+      <div class="mx-auto max-w-6xl px-5 py-16">
+        <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Eis &amp; Bistro</p>
+        <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Cremig, frisch, unkompliziert.</h2>
+        <p class="mt-3 max-w-2xl text-[#5d594d]">Vom Eisbecher bis zur Pizza — Eiscafé und italienische Küche unter einem Dach.</p>
+        <div class="mt-10 grid gap-x-12 gap-y-1 sm:grid-cols-2">
+          {d.karte.map(([t, desc]) => (
+            <div class="flex items-baseline gap-4 border-b border-dashed border-[#253026]/15 py-4">
+              <span class="ds shrink-0 text-xl font-semibold text-[#315949]">{t}</span>
+              <span class="text-sm leading-snug text-[#5d594d]">{desc}</span>
+            </div>
+          ))}
+        </div>
+        <p class="mt-6 text-sm text-[#8a806e]">Auszug aus dem Angebot · Sorten, Gerichte &amp; Preise variieren saisonal</p>
+      </div>
+    </section>
+
     <!-- Öffnungszeiten + Bewertung -->
-    <section data-reveal class="border-t border-[#23291f]/10 bg-[#e8dcc4]">
-      <div class="mx-auto grid max-w-5xl items-stretch gap-8 px-5 py-16 sm:grid-cols-2">
-        <div class="flex flex-col">
-          <p class="text-xs font-semibold tracking-[0.22em] text-[#a8481f] uppercase">Öffnungszeiten</p>
+    <section data-reveal class="bg-[#fff8ea]">
+      <div class="mx-auto grid max-w-6xl items-stretch gap-8 px-5 py-16 sm:grid-cols-2">
+        <div class="rounded-[1.5rem] border border-[#253026]/10 bg-white/52 p-7">
+          <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Öffnungszeiten</p>
           <h2 class="ds mt-3 text-3xl font-semibold">Im Sommer täglich.</h2>
-          <p class="mt-5 leading-relaxed text-[#5b5345]">
-            Eiscafé-Saison — die genauen Zeiten stimmen wir mit dem Wirt final ab und tragen sie hier ein.
-            In der Zwischenzeit: kurz anrufen, dann weißt du es sicher.
+          <div class="mt-5 grid gap-2 text-sm font-semibold text-[#253026]">
+            {d.oeffnungszeiten.map(([tag, zeit]) => (
+              <div class="flex items-center justify-between rounded-2xl bg-[#fffdf6] px-4 py-3 ring-1 ring-[#253026]/8">
+                <span>{tag}</span>
+                <span class="text-[#b24b25]">{zeit}</span>
+              </div>
+            ))}
+          </div>
+          <p class="mt-5 leading-relaxed text-[#5d594d]">
+            Zeiten können je nach Wetter und Saison wechseln. Kurz anrufen, dann weißt du es sicher.
           </p>
-          <a href={d.telHref} class="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#2f5141]/30 px-5 py-2.5 text-sm font-semibold text-[#2f5141] transition hover:bg-[#2f5141]/10">
-            <span class="size-2 rounded-full bg-[#2f5141]"></span> {d.tel}
+          <a href={d.telHref} class="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#315949]/30 px-5 py-2.5 text-sm font-semibold text-[#315949] transition hover:bg-[#315949]/10">
+            <span class="size-2 rounded-full bg-[#315949]"></span> {d.tel}
           </a>
         </div>
-        <div class="flex flex-col justify-center rounded-[1.5rem] bg-[#f2ebdd] p-8 text-center ring-1 ring-[#23291f]/8">
+        <div class="flex flex-col justify-center rounded-[1.5rem] bg-[#f4e7c9] p-8 text-center ring-1 ring-[#253026]/8">
           <div class="text-[#c6943a]">★★★★★</div>
           <div class="ds mt-2 text-6xl font-black">{d.rating}</div>
-          <p class="mt-1 text-[#5b5345]">aus {d.reviews} Google-Bewertungen</p>
+          <p class="mt-1 text-[#5d594d]">aus {d.reviews} Google-Bewertungen</p>
         </div>
       </div>
     </section>
 
     <!-- Kontakt -->
-    <section class="relative isolate overflow-hidden bg-[#23291f] text-[#f2ebdd]">
-      <svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" class="pointer-events-none absolute inset-x-0 bottom-0 -z-0 h-40 w-full text-[#2f5141]/35"><path d={ridge} fill="currentColor"/></svg>
-      <div class="relative mx-auto grid max-w-5xl gap-8 px-5 py-16 sm:grid-cols-2">
+    <section id="kontakt" class="relative isolate overflow-hidden bg-[#315949] text-[#fff8ea]">
+      <div class="shore pointer-events-none absolute inset-x-0 top-0 h-24 opacity-35"></div>
+      <div class="relative mx-auto grid max-w-6xl gap-8 px-5 py-16 sm:grid-cols-2">
         <div>
           <h2 class="ds text-4xl font-semibold">Komm vorbei.</h2>
           <dl class="mt-7 space-y-4 text-lg">
-            <div><dt class="text-xs tracking-[0.2em] text-[#d98a6a] uppercase">Adresse</dt><dd class="mt-1">{d.adresse}</dd></div>
-            <div><dt class="text-xs tracking-[0.2em] text-[#d98a6a] uppercase">Telefon</dt><dd class="mt-1"><a href={d.telHref} class="hover:text-[#e9a87d]">{d.tel}</a></dd></div>
+            <div><dt class="text-xs tracking-[0.2em] text-[#ffd6a0] uppercase">Adresse</dt><dd class="mt-1">{d.adresse}</dd></div>
+            <div><dt class="text-xs tracking-[0.2em] text-[#ffd6a0] uppercase">Telefon</dt><dd class="mt-1"><a href={d.telHref} class="hover:text-[#ffd6a0]">{d.tel}</a></dd></div>
           </dl>
-          <a href={d.mapsUrl} target="_blank" rel="noopener" class="mt-7 inline-block rounded-full bg-[#a8481f] px-7 py-3.5 font-semibold transition hover:-translate-y-0.5 hover:bg-[#c25a2a]">Route öffnen</a>
+          <a href={d.mapsUrl} target="_blank" rel="noopener" class="mt-7 inline-block rounded-full bg-[#b24b25] px-7 py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#c25a2a]">Route öffnen</a>
         </div>
-        <div class="rounded-[1.5rem] bg-[#f2ebdd]/5 p-7 ring-1 ring-[#f2ebdd]/10">
-          <p class="text-xs tracking-[0.2em] text-[#d98a6a] uppercase">Eis &amp; Bistro</p>
-          <p class="mt-4 leading-relaxed text-[#cdc6b6]">
+        <div class="rounded-[1.5rem] bg-white/8 p-7 ring-1 ring-white/12">
+          <p class="text-xs tracking-[0.2em] text-[#ffd6a0] uppercase">Eis &amp; Bistro</p>
+          <p class="mt-4 leading-relaxed text-[#f3ead7]">
             Gelato, Spaghettieis und warme Küche — mitten in Wiesloch, mit Plätzen draußen.
             Erst ein Teller Pasta, dann der Eisbecher: alles an einem Ort.
           </p>
+          <p class="mt-5 text-sm text-[#f3ead7]/75">Route öffnen, kurz anrufen und direkt vorbeischauen.</p>
         </div>
       </div>
       <div class="relative flex flex-col items-center gap-2 pb-9">
-        <svg viewBox="0 0 28 18" class="h-5 w-8 text-[#d98a6a]" fill="currentColor" aria-hidden="true"><path d="M0 18 L8 4 L13 11 L18 2 L28 18 Z"/></svg>
         <p class="ds text-2xl font-semibold">Dolomiti</p>
-        <p class="text-center text-xs text-[#f2ebdd]/45">{d.adresse} · Inhaber {d.inhaber}</p>
-        <p class="text-center text-xs text-[#f2ebdd]/35">Seiten-Entwurf von NURAC — noch nicht live</p>
+        <p class="text-center text-xs text-[#fff8ea]/55">{d.adresse} · Inhaber {d.inhaber}</p>
+        <p class="text-center text-xs text-[#fff8ea]/35">NURAC Konzeptvorschau · Fotos, Zeiten, Impressum &amp; Datenschutz vor Livegang final abstimmen</p>
       </div>
     </section>
 
     <!-- Sticky CTA (mobile) -->
-    <div class="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-[#23291f]/10 bg-[#f2ebdd]/95 p-2.5 backdrop-blur sm:hidden">
-      <a href={d.telHref} class="flex-1 rounded-full bg-[#a8481f] py-3 text-center font-semibold text-[#f2ebdd]">Anrufen</a>
-      <a href={d.mapsUrl} target="_blank" rel="noopener" class="flex-1 rounded-full border border-[#23291f]/20 py-3 text-center font-semibold">Route</a>
+    <div class="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-[#253026]/10 bg-[#fff8ea]/95 p-2.5 backdrop-blur sm:hidden">
+      <a href={d.telHref} class="flex-1 rounded-full bg-[#b24b25] py-3 text-center font-semibold text-white">Anrufen</a>
+      <a href={d.mapsUrl} target="_blank" rel="noopener" class="flex-1 rounded-full border border-[#253026]/20 py-3 text-center font-semibold">Route</a>
     </div>
   </main>
 
   <style>
     .ds { font-family: "Fraunces", Georgia, serif; }
-    .glow-text {
-      background-image: linear-gradient(100deg, #2f5141 0%, #a8481f 52%, #d98a6a 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .font800 { font-weight: 800; }
+    .wave {
+      background:
+        radial-gradient(circle at 12% 38%, rgba(126, 182, 201, .22) 0 9rem, transparent 9.1rem),
+        radial-gradient(circle at 86% 14%, rgba(255, 214, 107, .32) 0 11rem, transparent 11.1rem),
+        linear-gradient(180deg, rgba(126,182,201,.18), transparent 72%);
     }
-    .kenburns { will-change: transform; animation: kenburns 24s ease-in-out infinite alternate; }
-    @keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.08); } }
+    .shore {
+      background: radial-gradient(120% 90% at 50% -40%, rgba(255,255,255,.92), transparent 64%);
+    }
+    .carousel { border-radius: 2rem; }
+    .carousel-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      overscroll-behavior-x: contain;
+      border-radius: 2rem;
+      border: 1px solid rgba(37,48,38,.12);
+      background: #f4e7c9;
+      box-shadow: 0 24px 70px -28px rgba(37,48,38,.55);
+      scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-slide {
+      position: relative;
+      flex: 0 0 100%;
+      height: clamp(360px, 52vw, 610px);
+      scroll-snap-align: start;
+      overflow: hidden;
+      margin: 0;
+      background: #f4e7c9;
+    }
+    .carousel-slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 48%, rgba(0,0,0,.22));
+      pointer-events: none;
+    }
+    .carousel-slide figcaption {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 2;
+      border-radius: 999px;
+      background: rgba(255,248,234,.94);
+      padding: .55rem 1rem;
+      color: #b24b25;
+      font-weight: 800;
+      box-shadow: 0 10px 30px -18px rgba(0,0,0,.55);
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+      display: grid;
+      width: 2.7rem;
+      height: 2.7rem;
+      place-items: center;
+      transform: translateY(-50%);
+      border-radius: 999px;
+      background: rgba(255,248,234,.92);
+      color: #253026;
+      font-size: 2rem;
+      line-height: 1;
+      box-shadow: 0 14px 32px -18px rgba(0,0,0,.55);
+      opacity: .94;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .carousel-btn:hover { opacity: 1; transform: translateY(-50%) scale(1.04); }
+    .carousel-dots {
+      position: absolute;
+      left: 50%;
+      bottom: .85rem;
+      z-index: 3;
+      display: flex;
+      gap: .45rem;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: rgba(37,48,38,.22);
+      padding: .35rem;
+      backdrop-filter: blur(8px);
+    }
+    .carousel-dots button {
+      width: .58rem;
+      height: .58rem;
+      border-radius: 999px;
+      background: rgba(255,248,234,.62);
+      transition: width .18s ease, background .18s ease;
+    }
+    .carousel-dots button.is-active { width: 1.35rem; background: #fff8ea; }
     .marquee { overflow: hidden; }
-    .marquee-track { display: flex; width: max-content; gap: 0; animation: marquee 32s linear infinite; }
+    .marquee-track { display: flex; width: max-content; gap: 0; animation: marquee 34s linear infinite; }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .quick-facts > div { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .quick-facts > div:hover { transform: translateY(-2px); border-color: rgba(126,182,201,.5); box-shadow: 0 20px 38px -30px rgba(47,109,128,.7); }
+    [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
     [data-reveal].in { opacity: 1; transform: none; }
-    .hero-stagger > * { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-    .hero-stagger > *:nth-child(1) { animation-delay: 0.05s; }
-    .hero-stagger > *:nth-child(2) { animation-delay: 0.14s; }
-    .hero-stagger > *:nth-child(3) { animation-delay: 0.24s; }
-    .hero-stagger > *:nth-child(4) { animation-delay: 0.34s; }
-    .hero-stagger > *:nth-child(5) { animation-delay: 0.44s; }
-    .hero-stagger > *:nth-child(6) { animation-delay: 0.54s; }
-    .hero-stagger > *:nth-child(7) { animation-delay: 0.66s; }
-    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    .hero-stagger > * { animation: rise-in .62s ease both; }
+    .hero-stagger > *:nth-child(2) { animation-delay: .05s; }
+    .hero-stagger > *:nth-child(3) { animation-delay: .10s; }
+    .hero-stagger > *:nth-child(4) { animation-delay: .15s; }
+    .hero-stagger > *:nth-child(5) { animation-delay: .20s; }
+    .hero-stagger > *:nth-child(6) { animation-delay: .25s; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    @media (max-width: 640px) {
+      .carousel-slide { height: 315px; }
+      .carousel-btn { display: none; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .marquee-track, .kenburns { animation: none; }
+      .marquee-track { animation: none; }
       [data-reveal] { opacity: 1; transform: none; transition: none; }
       .hero-stagger > * { animation: none; }
+      .carousel-track { scroll-behavior: auto; }
     }
   </style>
 
   <script>
+    document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+      const track = carousel.querySelector("[data-track]");
+      const slides = Array.from(carousel.querySelectorAll("[data-slide]"));
+      const dots = Array.from(carousel.querySelectorAll("[data-dot]"));
+      const prev = carousel.querySelector("[data-prev]");
+      const next = carousel.querySelector("[data-next]");
+      let raf = 0;
+      const currentIndex = () => Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      const setActive = () => {
+        const active = currentIndex();
+        dots.forEach((dot, i) => dot.classList.toggle("is-active", i === active));
+      };
+      const go = (index) => {
+        const target = (index + slides.length) % slides.length;
+        track.scrollTo({ left: target * track.clientWidth, behavior: "smooth" });
+      };
+      prev?.addEventListener("click", () => go(currentIndex() - 1));
+      next?.addEventListener("click", () => go(currentIndex() + 1));
+      dots.forEach((dot, i) => dot.addEventListener("click", () => go(i)));
+      track.addEventListener("scroll", () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(setActive);
+      }, { passive: true });
+      window.addEventListener("resize", setActive, { passive: true });
+      setActive();
+    });
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
