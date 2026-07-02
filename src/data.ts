@@ -56,9 +56,9 @@ export const d = {
     },
   ],
   schnell: [
-    ["Adresse", "Hauptstraße 72"],
+    ["Heute", "Mo–Sa 9–22 · So ab 10"],
+    ["Draußen", "Plätze an der Hauptstraße"],
     ["Telefon", "06222 1362"],
-    ["Sommer", "Mo–Sa 9–22 · So ab 10"],
   ] as [string, string][],
   // Eiscafé + Bistro — echte Angebots-Kategorien (aus der Speisekarte), keine erfundenen Preise.
   karte: [
@@ -76,6 +76,11 @@ export const d = {
     ["Eis & Bistro unter einem Dach", "Erst Pasta oder Pizza, danach ein Eisbecher — alles an einem Ort."],
     ["Mitten in Wiesloch", "An der Hauptstraße, mit Plätzen draußen — perfekt für eine Sommerpause."],
   ] as [string, string][],
+  momente: [
+    ["Nach der Schule", "Ein Eis auf die Hand, kurz an der Hauptstraße sitzen und weiter geht’s."],
+    ["Cappuccino in der Sonne", "Draußen Platz nehmen, Cappuccino dazu — ein paar Minuten Sommerpause."],
+    ["Erst herzhaft, dann Eis", "Pizza oder Pasta aus der Bistro-Küche, danach Spaghettieis oder Eisbecher."],
+  ] as [string, string][],
   faq: [
     [
       "Gibt es draußen Sitzplätze?",
@@ -87,7 +92,7 @@ export const d = {
     ],
     [
       "Wann hat Dolomiti geöffnet?",
-      "Im Sommer aktuell Montag bis Samstag von 09:00 bis 22:00 Uhr und sonntags von 10:00 bis 22:00 Uhr. Zeiten können je nach Wetter und Saison wechseln — kurz anrufen ist am sichersten.",
+      "Im Sommer aktuell Montag bis Samstag von 09:00 bis 22:00 Uhr und sonntags von 10:00 bis 22:00 Uhr. Da Eiszeiten vom Wetter und der Saison abhängen können: kurz anrufen ist am sichersten.",
     ],
     [
       "Kann man telefonisch reservieren oder kurz nachfragen?",

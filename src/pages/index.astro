@@ -69,7 +69,7 @@ const schema = {
         </a>
         <nav class="hidden items-center gap-7 text-sm font-semibold text-[#5d594d] md:flex" aria-label="Navigation">
           <a class="hover:text-[#b24b25]" href="#fotos">Fotos</a>
-          <a class="hover:text-[#b24b25]" href="#familie">Familie</a>
+          <a class="hover:text-[#b24b25]" href="#momente">Momente</a>
           <a class="hover:text-[#b24b25]" href="#angebot">Angebot</a>
           <a class="hover:text-[#b24b25]" href="#faq">FAQ</a>
           <a class="hover:text-[#b24b25]" href="#kontakt">Kontakt</a>
@@ -90,19 +90,29 @@ const schema = {
             Ein Eis wie Kurzurlaub. <span class="text-[#5aa5bc]">Mitten</span> in Wiesloch.
           </h1>
           <p class="mt-5 text-base leading-relaxed text-[#5d594d] sm:mt-6 sm:text-xl">
-            Spaghettieis, Waffeln, Cappuccino und italienische Küche — Kinder mit Eis,
-            Eltern mit Caffè, kurz Sommer fühlen. Bei <strong class="text-[#253026]">Manuel &amp; Team</strong> in der Hauptstraße.
+            Heute Lust auf Spaghettieis, Cappuccino in der Sonne oder eine warme Waffel?
+            Dolomiti sitzt mitten in der Hauptstraße — mit Plätzen draußen und
+            italienischer Küche bei <strong class="text-[#253026]">Manuel &amp; Team</strong>.
           </p>
 
+          <div class="today-badge mt-6 rounded-[1.35rem] border border-[#7eb6c9]/35 bg-white/68 p-4 shadow-[0_20px_45px_-34px_rgba(47,109,128,.75)]" data-open-badge>
+            <div class="flex items-center gap-2 text-xs font-extrabold tracking-[0.2em] text-[#b24b25] uppercase">
+              <span class="live-dot size-2.5 rounded-full bg-[#315949]" data-open-dot></span>
+              Heute in Wiesloch
+            </div>
+            <p class="mt-2 text-lg font-black text-[#253026]" data-today-hours>Mo–Sa 09:00–22:00 · So ab 10:00</p>
+            <p class="mt-1 text-sm leading-relaxed text-[#5d594d]" data-open-state>Zeiten können je nach Wetter und Saison wechseln.</p>
+          </div>
+
           <div class="mt-6 hidden flex-wrap gap-2.5 text-sm font-semibold text-[#315949] sm:flex">
-            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Mit Kindern entspannt</span>
-            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Eis &amp; Caffè draußen</span>
+            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Nach der Schule ein Eis</span>
+            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Cappuccino draußen</span>
             <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Hauptstraße 72</span>
           </div>
 
-          <div class="mt-6 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
-            <a href={d.telHref} class="rounded-full bg-[#b24b25] px-4 py-3.5 text-center font-semibold text-white shadow-[0_14px_30px_-14px_rgba(178,75,37,.8)] transition hover:-translate-y-0.5 hover:bg-[#973d1c] sm:px-8 sm:py-4">Einfach anrufen</a>
-            <a href={d.mapsUrl} target="_blank" rel="noopener" class="rounded-full border border-[#253026]/18 bg-white/45 px-4 py-3.5 text-center font-semibold transition hover:-translate-y-0.5 hover:border-[#7eb6c9] hover:text-[#2f6d80] sm:px-8 sm:py-4">Route öffnen</a>
+          <div class="mt-6 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
+            <a href={d.telHref} class="min-w-0 rounded-full bg-[#b24b25] px-3 py-3.5 text-center text-sm font-semibold text-white shadow-[0_14px_30px_-14px_rgba(178,75,37,.8)] transition hover:-translate-y-0.5 hover:bg-[#973d1c] sm:px-8 sm:py-4 sm:text-base">Einfach anrufen</a>
+            <a href={d.mapsUrl} target="_blank" rel="noopener" class="min-w-0 rounded-full border border-[#253026]/18 bg-white/45 px-3 py-3.5 text-center text-sm font-semibold transition hover:-translate-y-0.5 hover:border-[#7eb6c9] hover:text-[#2f6d80] sm:px-8 sm:py-4 sm:text-base">Route öffnen</a>
           </div>
 
           <div class="quick-facts mt-7 hidden gap-2.5 sm:grid sm:grid-cols-3" aria-label="Schnellinfos">
@@ -158,6 +168,27 @@ const schema = {
       </div>
     </div>
 
+    <!-- Besuchsmomente -->
+    <section id="momente" data-reveal class="bg-[#fff8ea]">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:grid-cols-[0.7fr_1.3fr]">
+        <div>
+          <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Heute kurz vorbei</p>
+          <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Was passt gerade?</h2>
+          <p class="mt-4 leading-relaxed text-[#5d594d]">
+            Drei typische Dolomiti-Momente — ohne großes Planen, einfach kurz in der Hauptstraße stoppen.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-3">
+          {d.momente.map(([title, text]) => (
+            <article class="moment-card rounded-[1.35rem] border border-[#253026]/10 bg-white/62 p-5 shadow-[0_18px_40px_-32px_rgba(37,48,38,.62)] transition hover:-translate-y-1 hover:border-[#7eb6c9]/55 hover:bg-white/78">
+              <h3 class="ds text-2xl font-semibold text-[#315949]">{title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-[#5d594d]">{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- Familie / Manuel -->
     <section id="familie" data-reveal class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 lg:grid-cols-[0.95fr_1.05fr]">
       <div class="rounded-[2rem] border border-[#253026]/10 bg-white/58 p-7 shadow-[0_20px_55px_-35px_rgba(37,48,38,.5)]">
@@ -202,7 +233,12 @@ const schema = {
       <div class="mx-auto grid max-w-6xl items-stretch gap-8 px-5 py-16 sm:grid-cols-2">
         <div class="rounded-[1.5rem] border border-[#253026]/10 bg-white/52 p-7">
           <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Öffnungszeiten</p>
-          <h2 class="ds mt-3 text-3xl font-semibold">Im Sommer täglich.</h2>
+          <h2 class="ds mt-3 text-3xl font-semibold">Heute kurz vorbeikommen?</h2>
+          <div class="mt-5 rounded-[1.2rem] border border-[#7eb6c9]/25 bg-[#fffdf6] p-4">
+            <p class="text-xs font-extrabold tracking-[0.18em] text-[#b24b25] uppercase">Sommerzeiten</p>
+            <p class="mt-1 text-lg font-black text-[#253026]" data-hours-today>Mo–Sa 09:00–22:00 · So ab 10:00</p>
+            <p class="mt-1 text-sm leading-relaxed text-[#5d594d]" data-hours-state>Zeiten können wetter- und saisonbedingt abweichen.</p>
+          </div>
           <div class="mt-5 grid gap-2 text-sm font-semibold text-[#253026]">
             {d.oeffnungszeiten.map(([tag, zeit]) => (
               <div class="flex items-center justify-between rounded-2xl bg-[#fffdf6] px-4 py-3 ring-1 ring-[#253026]/8">
@@ -212,7 +248,7 @@ const schema = {
             ))}
           </div>
           <p class="mt-5 leading-relaxed text-[#5d594d]">
-            Zeiten können je nach Wetter und Saison wechseln. Kurz anrufen, dann weißt du es sicher.
+            Gerade bei Sonne, Ferien oder Wetterwechsel: kurz anrufen, dann weißt du es sicher.
           </p>
           <a href={d.telHref} class="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#315949]/30 px-5 py-2.5 text-sm font-semibold text-[#315949] transition hover:bg-[#315949]/10">
             <span class="size-2 rounded-full bg-[#315949]"></span> {d.tel}
@@ -233,7 +269,7 @@ const schema = {
           <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Kurz beantwortet</p>
           <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Häufige Fragen.</h2>
           <p class="mt-4 leading-relaxed text-[#5d594d]">
-            Die wichtigsten Infos für deinen Besuch — kurz und ehrlich beantwortet.
+            Alles Wichtige vor dem kurzen Besuch — draußen sitzen, Waffeln, Zeiten und Anruf.
           </p>
         </div>
         <div class="grid gap-3">
@@ -296,6 +332,29 @@ const schema = {
     }
     .shore {
       background: radial-gradient(120% 90% at 50% -40%, rgba(255,255,255,.92), transparent 64%);
+    }
+    .sun-disc { animation: sun-float 9s ease-in-out infinite; }
+    .today-badge { position: relative; overflow: hidden; }
+    .today-badge::after {
+      content: "";
+      position: absolute;
+      inset: auto -18% -70% 42%;
+      height: 120%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,214,107,.34), transparent 62%);
+      pointer-events: none;
+    }
+    .today-badge.is-open .live-dot { background: #315949; }
+    .today-badge.is-closed .live-dot { background: #b24b25; }
+    .live-dot { animation: live-pulse 2.3s ease-in-out infinite; }
+    .moment-card { position: relative; overflow: hidden; }
+    .moment-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: .35rem;
+      background: linear-gradient(180deg, #7eb6c9, #ffd66b, #b24b25);
+      opacity: .78;
     }
     .carousel { border-radius: 2rem; }
     .carousel-track {
@@ -393,12 +452,15 @@ const schema = {
     .hero-stagger > *:nth-child(5) { animation-delay: .20s; }
     .hero-stagger > *:nth-child(6) { animation-delay: .25s; }
     @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    @keyframes sun-float { 0%, 100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(-1rem,.8rem,0) scale(1.04); } }
+    @keyframes live-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(49,89,73,.32); } 50% { box-shadow: 0 0 0 .5rem rgba(49,89,73,0); } }
     @media (max-width: 640px) {
       .carousel-slide { height: 315px; }
       .carousel-btn { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
       .marquee-track { animation: none; }
+      .sun-disc, .live-dot { animation: none; }
       [data-reveal] { opacity: 1; transform: none; transition: none; }
       .hero-stagger > * { animation: none; }
       .carousel-track { scroll-behavior: auto; }
@@ -412,7 +474,10 @@ const schema = {
       const dots = Array.from(carousel.querySelectorAll("[data-dot]"));
       const prev = carousel.querySelector("[data-prev]");
       const next = carousel.querySelector("[data-next]");
+      if (!track || slides.length === 0) return;
       let raf = 0;
+      let autoTimer = 0;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const currentIndex = () => Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
       const setActive = () => {
         const active = currentIndex();
@@ -422,16 +487,51 @@ const schema = {
         const target = (index + slides.length) % slides.length;
         track.scrollTo({ left: target * track.clientWidth, behavior: "smooth" });
       };
-      prev?.addEventListener("click", () => go(currentIndex() - 1));
-      next?.addEventListener("click", () => go(currentIndex() + 1));
-      dots.forEach((dot, i) => dot.addEventListener("click", () => go(i)));
+      const stopAuto = () => window.clearInterval(autoTimer);
+      const goManual = (index) => { stopAuto(); go(index); };
+      prev?.addEventListener("click", () => goManual(currentIndex() - 1));
+      next?.addEventListener("click", () => goManual(currentIndex() + 1));
+      dots.forEach((dot, i) => dot.addEventListener("click", () => goManual(i)));
+      track.addEventListener("pointerdown", stopAuto, { passive: true });
+      track.addEventListener("wheel", stopAuto, { passive: true });
       track.addEventListener("scroll", () => {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(setActive);
       }, { passive: true });
       window.addEventListener("resize", setActive, { passive: true });
       setActive();
+      if (!reducedMotion && slides.length > 1) {
+        autoTimer = window.setInterval(() => {
+          if (!document.hidden) go(currentIndex() + 1);
+        }, 6200);
+      }
     });
+
+    const setOpeningCue = () => {
+      const badges = document.querySelectorAll("[data-open-badge]");
+      if (!badges.length) return;
+      const berlinNow = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
+      const day = berlinNow.getDay();
+      const minutes = berlinNow.getHours() * 60 + berlinNow.getMinutes();
+      const sunday = day === 0;
+      const opens = sunday ? 10 * 60 : 9 * 60;
+      const closes = 22 * 60;
+      const label = sunday ? "Heute: 10:00–22:00" : "Heute: 09:00–22:00";
+      const openNow = minutes >= opens && minutes < closes;
+      const beforeOpen = minutes < opens;
+      const state = openNow
+        ? "Wahrscheinlich gerade geöffnet — bei Wetter/Saison kurz anrufen."
+        : beforeOpen
+          ? `Öffnet voraussichtlich ab ${sunday ? "10:00" : "09:00"} — kurz anrufen, wenn du sicher gehen willst.`
+          : "Für heute wahrscheinlich vorbei — morgen wieder Sommerzeiten. Kurz anrufen, wenn du sicher gehen willst.";
+      document.querySelectorAll("[data-today-hours], [data-hours-today]").forEach((el) => { el.textContent = label; });
+      document.querySelectorAll("[data-open-state], [data-hours-state]").forEach((el) => { el.textContent = state; });
+      badges.forEach((badge) => {
+        badge.classList.toggle("is-open", openNow);
+        badge.classList.toggle("is-closed", !openNow);
+      });
+    };
+    setOpeningCue();
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
