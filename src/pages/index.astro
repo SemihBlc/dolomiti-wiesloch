@@ -6,9 +6,9 @@ const img = (src: string) => src.startsWith("http") ? src : `${base}/${src}`;
 const fonts =
   "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&display=swap";
 const site = Astro.site?.href.replace(/\/$/, "") ?? "https://semihblc.github.io";
-const schema = {
-  "@context": "https://schema.org",
+const businessSchema = {
   "@type": "IceCreamShop",
+  "@id": `${site}${base}/#business`,
   name: `${d.name} Wiesloch`,
   image: [`${site}${base}/fotos/hero.jpg`, `${site}${base}/fotos/nasenschild.jpg`],
   telephone: "+4962221362",
@@ -39,6 +39,22 @@ const schema = {
     },
   ],
 };
+const faqSchema = {
+  "@type": "FAQPage",
+  "@id": `${site}${base}/#faq`,
+  mainEntity: d.faq.map(([question, answer]) => ({
+    "@type": "Question",
+    name: question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: answer,
+    },
+  })),
+};
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [businessSchema, faqSchema],
+};
 ---
 
 <Layout title={`${d.name} Wiesloch — Hausgemachtes Eis & italienisches Bistro`} fonts={fonts}>
@@ -55,6 +71,7 @@ const schema = {
           <a class="hover:text-[#b24b25]" href="#fotos">Fotos</a>
           <a class="hover:text-[#b24b25]" href="#familie">Familie</a>
           <a class="hover:text-[#b24b25]" href="#angebot">Angebot</a>
+          <a class="hover:text-[#b24b25]" href="#faq">FAQ</a>
           <a class="hover:text-[#b24b25]" href="#kontakt">Kontakt</a>
         </nav>
         <a href={d.telHref} class="rounded-full bg-[#b24b25] px-4 py-2 text-sm font800 font-semibold text-white shadow-sm transition hover:bg-[#973d1c]">Anrufen</a>
@@ -105,7 +122,6 @@ const schema = {
         <section id="fotos" class="relative" aria-label="Fotos zum Durchswipen">
           <div class="mb-3 flex items-center justify-between gap-4">
             <p class="text-sm font-bold text-[#315949]">Fotos zum Durchswipen</p>
-            <p class="hidden text-xs text-[#7b7160] sm:block">ziehen · klicken · wischen</p>
           </div>
           <div class="carousel group relative" data-carousel>
             <div class="carousel-track" data-track>
@@ -171,9 +187,9 @@ const schema = {
         <p class="mt-3 max-w-2xl text-[#5d594d]">Vom Eisbecher bis zur Pizza — Eiscafé und italienische Küche unter einem Dach.</p>
         <div class="mt-10 grid gap-x-12 gap-y-1 sm:grid-cols-2">
           {d.karte.map(([t, desc]) => (
-            <div class="flex items-baseline gap-4 border-b border-dashed border-[#253026]/15 py-4">
-              <span class="ds shrink-0 text-xl font-semibold text-[#315949]">{t}</span>
-              <span class="text-sm leading-snug text-[#5d594d]">{desc}</span>
+            <div class="grid gap-1 border-b border-dashed border-[#253026]/15 py-4 sm:grid-cols-[10.5rem_minmax(0,1fr)] sm:items-start sm:gap-5">
+              <span class="ds text-xl leading-snug font-semibold text-[#315949]">{t}</span>
+              <span class="text-sm leading-relaxed text-[#5d594d]">{desc}</span>
             </div>
           ))}
         </div>
@@ -206,6 +222,30 @@ const schema = {
           <div class="text-[#c6943a]">★★★★★</div>
           <div class="ds mt-2 text-6xl font-black">{d.rating}</div>
           <p class="mt-1 text-[#5d594d]">aus {d.reviews} Google-Bewertungen</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / Answer Engine Optimierung -->
+    <section id="faq" data-reveal class="border-y border-[#253026]/10 bg-[#fffdf6]">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 py-16 lg:grid-cols-[0.72fr_1.28fr]">
+        <div>
+          <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Kurz beantwortet</p>
+          <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Häufige Fragen.</h2>
+          <p class="mt-4 leading-relaxed text-[#5d594d]">
+            Alles, was man vor dem kurzen Besuch wissen will — kompakt für Gäste, Google und KI-Antworten.
+          </p>
+        </div>
+        <div class="grid gap-3">
+          {d.faq.map(([question, answer], i) => (
+            <details class="group rounded-[1.25rem] border border-[#253026]/10 bg-white/70 p-5 shadow-[0_18px_36px_-30px_rgba(37,48,38,.55)] open:border-[#7eb6c9]/55" open={i === 0}>
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-bold text-[#253026] [&::-webkit-details-marker]:hidden">
+                <span>{question}</span>
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-[#fff8ea] text-[#b24b25] transition group-open:rotate-45">+</span>
+              </summary>
+              <p class="mt-4 leading-relaxed text-[#5d594d]">{answer}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>

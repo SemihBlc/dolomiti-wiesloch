@@ -76,6 +76,24 @@ export const d = {
     ["Eis & Bistro unter einem Dach", "Erst Pasta oder Pizza, danach ein Eisbecher — alles an einem Ort."],
     ["Mitten in Wiesloch", "An der Hauptstraße, mit Plätzen draußen — perfekt für eine Sommerpause."],
   ] as [string, string][],
+  faq: [
+    [
+      "Gibt es draußen Sitzplätze?",
+      "Ja. Dolomiti hat Plätze draußen an der Hauptstraße — gut für einen Eisbecher, Cappuccino oder eine kurze Sommerpause.",
+    ],
+    [
+      "Gibt es Waffeln?",
+      "Ja. Neben hausgemachtem Gelato, Eisbechern und Spaghettieis gibt es auch warme Waffeln, je nach Angebot mit Eis und Sahne.",
+    ],
+    [
+      "Wann hat Dolomiti geöffnet?",
+      "Im Sommer aktuell Montag bis Samstag von 09:00 bis 22:00 Uhr und sonntags von 10:00 bis 22:00 Uhr. Zeiten können je nach Wetter und Saison wechseln — kurz anrufen ist am sichersten.",
+    ],
+    [
+      "Kann man telefonisch reservieren oder kurz nachfragen?",
+      "Ja. Für aktuelle Öffnungszeiten, größere Gruppen oder kurze Rückfragen erreichst du Dolomiti telefonisch unter 06222 1362.",
+    ],
+  ] as [string, string][],
   // typische Gelato-Sorten (Auswahl variiert saisonal) — für die Lauf-Leiste
   sorten: [
     ["Stracciatella", "#d8cdb6"],
