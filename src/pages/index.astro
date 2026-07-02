@@ -100,9 +100,9 @@ const schema = {
             <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Hauptstraße 72</span>
           </div>
 
-          <div class="mt-6 flex flex-wrap gap-3 sm:mt-8">
-            <a href={d.telHref} class="rounded-full bg-[#b24b25] px-8 py-4 font-semibold text-white shadow-[0_14px_30px_-14px_rgba(178,75,37,.8)] transition hover:-translate-y-0.5 hover:bg-[#973d1c]">Einfach anrufen</a>
-            <a href={d.mapsUrl} target="_blank" rel="noopener" class="rounded-full border border-[#253026]/18 bg-white/45 px-8 py-4 font-semibold transition hover:-translate-y-0.5 hover:border-[#7eb6c9] hover:text-[#2f6d80]">Route öffnen</a>
+          <div class="mt-6 grid grid-cols-2 gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
+            <a href={d.telHref} class="rounded-full bg-[#b24b25] px-4 py-3.5 text-center font-semibold text-white shadow-[0_14px_30px_-14px_rgba(178,75,37,.8)] transition hover:-translate-y-0.5 hover:bg-[#973d1c] sm:px-8 sm:py-4">Einfach anrufen</a>
+            <a href={d.mapsUrl} target="_blank" rel="noopener" class="rounded-full border border-[#253026]/18 bg-white/45 px-4 py-3.5 text-center font-semibold transition hover:-translate-y-0.5 hover:border-[#7eb6c9] hover:text-[#2f6d80] sm:px-8 sm:py-4">Route öffnen</a>
           </div>
 
           <div class="quick-facts mt-7 hidden gap-2.5 sm:grid sm:grid-cols-3" aria-label="Schnellinfos">
