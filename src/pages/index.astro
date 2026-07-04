@@ -4,14 +4,14 @@ import { d } from "../data";
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const img = (src: string) => src.startsWith("http") ? src : `${base}/${src}`;
 const fonts =
-  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&display=swap";
+  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700;800;900&display=swap";
 const site = Astro.site?.href.replace(/\/$/, "") ?? "https://semihblc.github.io";
 const businessSchema = {
   "@type": "IceCreamShop",
   "@id": `${site}${base}/#business`,
   name: `${d.name} Wiesloch`,
   image: [`${site}${base}/fotos/hero.jpg`, `${site}${base}/fotos/nasenschild.jpg`],
-  telephone: "+4962221362",
+  telephone: d.telHref.replace("tel:", ""),
   address: {
     "@type": "PostalAddress",
     streetAddress: "Hauptstraße 72",
@@ -57,417 +57,942 @@ const schema = {
 };
 ---
 
-<Layout title={`${d.name} Wiesloch — Hausgemachtes Eis & italienisches Bistro`} fonts={fonts}>
+<Layout
+  title={`${d.name} Wiesloch — Eis, Caffè & Bistro an der Hauptstraße`}
+  description="Eiscafé Dolomiti in Wiesloch: hausgemachtes Gelato, Spaghettieis, Waffeln, Caffè und italienische Bistroküche direkt in der Hauptstraße."
+  fonts={fonts}
+>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-  <main class="min-h-svh overflow-x-hidden bg-[#fff8ea] text-[#253026] antialiased [font-family:Inter,sans-serif] pb-20 sm:pb-0">
-    <!-- Header -->
-    <header class="sticky top-0 z-40 border-b border-[#253026]/10 bg-[#fff8ea]/86 backdrop-blur-xl">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <a href="#top" class="flex items-center gap-2.5" aria-label="Dolomiti Startseite">
-          <span class="grid size-8 place-items-center rounded-full bg-[#7eb6c9] text-sm font-black text-white shadow-sm">D</span>
-          <span class="ds text-2xl leading-none font-semibold tracking-tight">Dolomiti</span>
+  <main class="dolomiti-page" id="top">
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="#top" class="brand" aria-label="Dolomiti Startseite">
+          <span class="brand-mark">D</span>
+          <span>
+            <span class="brand-name">Dolomiti</span>
+            <span class="brand-sub">Eiscafé · Bistro · Wiesloch</span>
+          </span>
         </a>
-        <nav class="hidden items-center gap-7 text-sm font-semibold text-[#5d594d] md:flex" aria-label="Navigation">
-          <a class="hover:text-[#b24b25]" href="#fotos">Fotos</a>
-          <a class="hover:text-[#b24b25]" href="#momente">Momente</a>
-          <a class="hover:text-[#b24b25]" href="#angebot">Angebot</a>
-          <a class="hover:text-[#b24b25]" href="#faq">FAQ</a>
-          <a class="hover:text-[#b24b25]" href="#kontakt">Kontakt</a>
+        <nav class="nav" aria-label="Navigation">
+          <a href="#fotos">Fotos</a>
+          <a href="#besuch">Besuch</a>
+          <a href="#angebot">Karte</a>
+          <a href="#faq">Fragen</a>
+          <a href="#kontakt">Kontakt</a>
         </nav>
-        <a href={d.telHref} class="rounded-full bg-[#b24b25] px-4 py-2 text-sm font800 font-semibold text-white shadow-sm transition hover:bg-[#973d1c]">Anrufen</a>
+        <a href={d.telHref} class="call-pill">Anrufen</a>
       </div>
     </header>
 
-    <!-- Hero -->
-    <section id="top" class="relative isolate overflow-hidden border-b border-[#253026]/10">
-      <div class="sun-disc pointer-events-none absolute right-[-8rem] top-10 -z-10 size-72 rounded-full bg-[#ffd66b]/35 blur-2xl"></div>
-      <div class="wave pointer-events-none absolute inset-x-0 top-0 -z-10 h-52 opacity-90"></div>
-
-      <div class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-8 sm:gap-10 sm:py-16 lg:grid-cols-[0.88fr_1.12fr] lg:py-20">
-        <div class="hero-stagger max-w-xl text-left">
-          <p class="text-xs font-extrabold tracking-[0.28em] text-[#b24b25] uppercase">Sommer · Eis · Wiesloch</p>
-          <h1 class="ds mt-4 text-[3.25rem] leading-[0.93] font-black tracking-tight sm:mt-5 sm:text-7xl lg:text-8xl">
-            Ein Eis wie Kurzurlaub. <span class="text-[#5aa5bc]">Mitten</span> in Wiesloch.
+    <section class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="overline">Hauptstraße 72 · seitlich Sonne, vorne Eis</p>
+          <h1>
+            Erst Sonne.
+            Dann Spaghettieis.
+            <span>Mitten in Wiesloch.</span>
           </h1>
-          <p class="mt-5 text-base leading-relaxed text-[#5d594d] sm:mt-6 sm:text-xl">
-            Heute Lust auf Spaghettieis, Cappuccino in der Sonne oder eine warme Waffel?
-            Dolomiti sitzt mitten in der Hauptstraße — mit Plätzen draußen und
-            italienischer Küche bei <strong class="text-[#253026]">Manuel &amp; Team</strong>.
+          <p class="lead">
+            Zwischen Markt, Schule und Feierabend: Kinder mit Eis auf der Hand,
+            Eltern mit Caffè, später Pizza oder Pasta — und immer dieser kurze Moment an der Hauptstraße.
           </p>
 
-          <div class="today-badge mt-6 rounded-[1.35rem] border border-[#7eb6c9]/35 bg-white/68 p-4 shadow-[0_20px_45px_-34px_rgba(47,109,128,.75)]" data-open-badge>
-            <div class="flex items-center gap-2 text-xs font-extrabold tracking-[0.2em] text-[#b24b25] uppercase">
-              <span class="live-dot size-2.5 rounded-full bg-[#315949]" data-open-dot></span>
-              Heute in Wiesloch
-            </div>
-            <p class="mt-2 text-lg font-black text-[#253026]" data-today-hours>Mo–Sa 09:00–22:00 · So ab 10:00</p>
-            <p class="mt-1 text-sm leading-relaxed text-[#5d594d]" data-open-state>Zeiten können je nach Wetter und Saison wechseln.</p>
+          <div class="hero-actions" aria-label="Schnelle Aktionen">
+            <a href={d.mapsUrl} target="_blank" rel="noopener" class="primary-action">Route zur Theke</a>
+            <a href={d.telHref} class="secondary-action">Kurz anrufen</a>
           </div>
 
-          <div class="mt-6 hidden flex-wrap gap-2.5 text-sm font-semibold text-[#315949] sm:flex">
-            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Nach der Schule ein Eis</span>
-            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Cappuccino draußen</span>
-            <span class="rounded-full border border-[#315949]/18 bg-white/60 px-4 py-2">Hauptstraße 72</span>
+          <div class="counter-note" data-open-badge>
+            <span class="note-label">Heute</span>
+            <strong data-today-hours>Mo–Sa 09:00–22:00 · So ab 10:00</strong>
+            <span data-open-state>Zeiten können je nach Wetter und Saison wechseln.</span>
           </div>
-
-          <div class="mt-6 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
-            <a href={d.telHref} class="min-w-0 rounded-full bg-[#b24b25] px-3 py-3.5 text-center text-sm font-semibold text-white shadow-[0_14px_30px_-14px_rgba(178,75,37,.8)] transition hover:-translate-y-0.5 hover:bg-[#973d1c] sm:px-8 sm:py-4 sm:text-base">Einfach anrufen</a>
-            <a href={d.mapsUrl} target="_blank" rel="noopener" class="min-w-0 rounded-full border border-[#253026]/18 bg-white/45 px-3 py-3.5 text-center text-sm font-semibold transition hover:-translate-y-0.5 hover:border-[#7eb6c9] hover:text-[#2f6d80] sm:px-8 sm:py-4 sm:text-base">Route öffnen</a>
-          </div>
-
-          <div class="quick-facts mt-7 hidden gap-2.5 sm:grid sm:grid-cols-3" aria-label="Schnellinfos">
-            {d.schnell.map(([label, value]) => (
-              <div class="rounded-2xl border border-[#253026]/10 bg-white/58 px-4 py-3 shadow-[0_16px_32px_-28px_rgba(37,48,38,.6)]">
-                <p class="text-[0.68rem] font-extrabold tracking-[0.18em] text-[#b24b25] uppercase">{label}</p>
-                <p class="mt-1 font-semibold text-[#253026]">{value}</p>
-              </div>
-            ))}
-          </div>
-
-          <p class="mt-5 text-sm text-[#5d594d] sm:mt-6">
-            <span class="text-[#c6943a]">★★★★★</span> <strong class="font-semibold text-[#253026]">{d.rating}</strong> · {d.reviews} Google-Bewertungen
-          </p>
         </div>
 
-        <section id="fotos" class="relative" aria-label="Fotos zum Durchswipen">
-          <div class="mb-3 flex items-center justify-between gap-4">
-            <p class="text-sm font-bold text-[#315949]">Fotos zum Durchswipen</p>
+        <div class="hero-collage" aria-label="Dolomiti Collage">
+          <figure class="photo-frame main-photo">
+            <img src={img("fotos/hero.jpg")} width="1600" height="900" alt="Spaghettieis und Cappuccino draußen beim Eiscafé Dolomiti" fetchpriority="high" decoding="async" />
+            <figcaption>Spaghettieis draußen</figcaption>
+          </figure>
+          <figure class="photo-frame sign-photo">
+            <img src={img("fotos/nasenschild.jpg")} width="1200" height="960" alt="Dolomiti Nasenschild in der Wieslocher Hauptstraße" loading="lazy" decoding="async" />
+            <figcaption>Hauptstraße 72</figcaption>
+          </figure>
+          <div class="gelato-ticket">
+            <span>kurz stoppen</span>
+            <strong>Eis · Caffè · Bistro</strong>
+            <small>{d.rating} ★ · {d.reviews} Bewertungen</small>
           </div>
-          <div class="carousel group relative" data-carousel>
-            <div class="carousel-track" data-track>
-              {d.bilder.map((foto, i) => (
-                <figure class="carousel-slide" data-slide>
-                  <img src={img(foto.src)} width="1600" height="1067" alt={foto.alt} class="h-full w-full object-cover" fetchpriority={i === 0 ? "high" : "auto"} loading={i === 0 ? "eager" : "lazy"} decoding="async" />
-                  <figcaption>{foto.label}</figcaption>
-                </figure>
-              ))}
-            </div>
-            <button class="carousel-btn left-3" type="button" data-prev aria-label="Vorheriges Foto">‹</button>
-            <button class="carousel-btn right-3" type="button" data-next aria-label="Nächstes Foto">›</button>
-            <div class="carousel-dots" aria-label="Foto auswählen">
-              {d.bilder.map((_foto, i) => (
-                <button type="button" data-dot={i} aria-label={`Foto ${i + 1} anzeigen`} class={i === 0 ? "is-active" : ""}></button>
-              ))}
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
     </section>
 
-    <!-- Gelato-Farbleiste -->
-    <div class="border-y border-[#253026]/10 bg-[#f4e7c9] py-4">
-      <div class="marquee">
-        <div class="marquee-track">
-          {[...d.sorten, ...d.sorten].map(([name, c]) => (
-            <span class="ds inline-flex items-center gap-2.5 text-2xl font-semibold text-[#253026]">
-              <span class="size-3 rounded-full ring-1 ring-[#253026]/10" style={`background:${c}`}></span>{name}
-              <span class="px-3 text-[#d7a77d]">◆</span>
-            </span>
-          ))}
-        </div>
+    <section class="flavour-strip" aria-label="Gelato-Sorten">
+      <div class="flavour-track">
+        {[...d.sorten, ...d.sorten].map(([name, c]) => (
+          <span class="flavour" style={`--dot:${c}`}><i></i>{name}</span>
+        ))}
       </div>
-    </div>
+    </section>
 
-    <!-- Besuchsmomente -->
-    <section id="momente" data-reveal class="bg-[#fff8ea]">
-      <div class="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:grid-cols-[0.7fr_1.3fr]">
+    <section id="fotos" class="photo-section" data-reveal>
+      <div class="section-heading split-heading">
         <div>
-          <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Heute kurz vorbei</p>
-          <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Was passt gerade?</h2>
-          <p class="mt-4 leading-relaxed text-[#5d594d]">
-            Drei typische Dolomiti-Momente — ohne großes Planen, einfach kurz in der Hauptstraße stoppen.
-          </p>
+          <p class="overline">Nicht Stockfoto. Dolomiti.</p>
+          <h2>So sieht die Pause wirklich aus.</h2>
         </div>
-        <div class="grid gap-4 sm:grid-cols-3">
-          {d.momente.map(([title, text]) => (
-            <article class="moment-card rounded-[1.35rem] border border-[#253026]/10 bg-white/62 p-5 shadow-[0_18px_40px_-32px_rgba(37,48,38,.62)] transition hover:-translate-y-1 hover:border-[#7eb6c9]/55 hover:bg-white/78">
-              <h3 class="ds text-2xl font-semibold text-[#315949]">{title}</h3>
-              <p class="mt-3 text-sm leading-relaxed text-[#5d594d]">{text}</p>
-            </article>
+        <p>
+          Keine glatten Symbolbilder: echte Theke, echte Terrasse, echte Hauptstraße.
+          Genau diese kleinen Szenen machen Dolomiti wiedererkennbar.
+        </p>
+      </div>
+
+      <div class="story-gallery" data-carousel>
+        <button class="gallery-arrow prev" type="button" data-prev aria-label="Vorheriges Foto">‹</button>
+        <div class="gallery-track" data-track>
+          {d.bilder.map((foto, i) => (
+            <figure class="gallery-slide" data-slide>
+              <img src={img(foto.src)} width="1400" height="1000" alt={foto.alt} loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+              <figcaption>{foto.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <button class="gallery-arrow next" type="button" data-next aria-label="Nächstes Foto">›</button>
+        <div class="gallery-dots" aria-label="Foto auswählen">
+          {d.bilder.map((_foto, i) => (
+            <button type="button" data-dot={i} aria-label={`Foto ${i + 1} anzeigen`} class={i === 0 ? "is-active" : ""}></button>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- Familie / Manuel -->
-    <section id="familie" data-reveal class="mx-auto grid max-w-6xl items-center gap-8 px-5 py-16 lg:grid-cols-[0.95fr_1.05fr]">
-      <div class="rounded-[2rem] border border-[#253026]/10 bg-white/58 p-7 shadow-[0_20px_55px_-35px_rgba(37,48,38,.5)]">
-        <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Manuel &amp; Team</p>
-        <h2 class="ds mt-4 text-4xl font-semibold sm:text-5xl">Ein Ort, an dem man kurz hängen bleibt.</h2>
-        <p class="mt-6 text-lg leading-relaxed text-[#5d594d]">
-          Für den schnellen Eisbecher nach der Schule, den Cappuccino in der Sonne oder Pizza und Pasta am Abend:
-          Dolomiti ist ein kleiner Treffpunkt in der Hauptstraße — freundlich, unkompliziert und nah dran.
-        </p>
-        <p class="ds mt-6 text-3xl italic text-[#b24b25]">Manuel &amp; Team</p>
+    <section id="besuch" class="visit-section" data-reveal>
+      <div class="section-heading">
+        <p class="overline">Drei kleine Szenen</p>
+        <h2>Zwischen Schule, Markt und Feierabend.</h2>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2">
-        {d.spezial.map(([t, dd]) => (
-          <article class="rounded-[1.4rem] border border-[#253026]/10 bg-[#fffdf6] p-6 transition hover:-translate-y-1 hover:border-[#7eb6c9]/55 hover:shadow-[0_20px_40px_-28px_rgba(47,109,128,.55)]">
-            <h3 class="ds text-2xl font-semibold text-[#315949]">{t}</h3>
-            <p class="mt-2 leading-relaxed text-[#5d594d]">{dd}</p>
+      <div class="scene-grid">
+        {d.momente.map(([title, text], i) => (
+          <article class={`scene-card scene-${i + 1}`}>
+            <span>0{i + 1}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
           </article>
         ))}
       </div>
     </section>
 
-    <!-- Eis & Bistro Karte -->
-    <section id="angebot" data-reveal class="border-y border-[#253026]/10 bg-[#fffdf6]">
-      <div class="mx-auto max-w-6xl px-5 py-16">
-        <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Eis &amp; Bistro</p>
-        <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Cremig, frisch, unkompliziert.</h2>
-        <p class="mt-3 max-w-2xl text-[#5d594d]">Vom Eisbecher bis zur Pizza — Eiscafé und italienische Küche unter einem Dach.</p>
-        <div class="mt-10 grid gap-x-12 gap-y-1 sm:grid-cols-2">
+    <section class="team-section" data-reveal>
+      <figure class="team-photo">
+        <img src={img("fotos/terrasse-original.jpg")} width="1400" height="984" alt="Außenbereich vom Eiscafé Dolomiti in der Hauptstraße" loading="lazy" decoding="async" />
+      </figure>
+      <div class="team-copy">
+        <p class="overline">Manuel & Team</p>
+        <h2>Keine sterile Kette. Ein Ort mit Wiedererkennung.</h2>
+        <p>
+          Dolomiti lebt von Dingen, die man wiedererkennt: Terrasse, Nasenschild, Theke,
+          bekannte Gesichter und der kurze Stopp mitten in der Stadt.
+        </p>
+        <div class="signature">Manuel &amp; Team</div>
+      </div>
+    </section>
+
+    <section id="angebot" class="menu-section" data-reveal>
+      <div class="menu-board">
+        <div class="menu-intro">
+          <p class="overline">Eis & Bistro</p>
+          <h2>Was steht auf dem kleinen Dolomiti-Zettel?</h2>
+          <p>Auszug aus dem Angebot — ohne erfundene Preise, Sorten und Gerichte können saisonal wechseln.</p>
+        </div>
+        <div class="menu-list">
           {d.karte.map(([t, desc]) => (
-            <div class="grid gap-1 border-b border-dashed border-[#253026]/15 py-4 sm:grid-cols-[10.5rem_minmax(0,1fr)] sm:items-start sm:gap-5">
-              <span class="ds text-xl leading-snug font-semibold text-[#315949]">{t}</span>
-              <span class="text-sm leading-relaxed text-[#5d594d]">{desc}</span>
+            <div class="menu-row">
+              <strong>{t}</strong>
+              <span>{desc}</span>
             </div>
           ))}
         </div>
-        <p class="mt-6 text-sm text-[#8a806e]">Auszug aus dem Angebot · Sorten, Gerichte &amp; Preise variieren saisonal</p>
       </div>
     </section>
 
-    <!-- Öffnungszeiten + Bewertung -->
-    <section data-reveal class="bg-[#fff8ea]">
-      <div class="mx-auto grid max-w-6xl items-stretch gap-8 px-5 py-16 sm:grid-cols-2">
-        <div class="rounded-[1.5rem] border border-[#253026]/10 bg-white/52 p-7">
-          <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Öffnungszeiten</p>
-          <h2 class="ds mt-3 text-3xl font-semibold">Heute kurz vorbeikommen?</h2>
-          <div class="mt-5 rounded-[1.2rem] border border-[#7eb6c9]/25 bg-[#fffdf6] p-4">
-            <p class="text-xs font-extrabold tracking-[0.18em] text-[#b24b25] uppercase">Sommerzeiten</p>
-            <p class="mt-1 text-lg font-black text-[#253026]" data-hours-today>Mo–Sa 09:00–22:00 · So ab 10:00</p>
-            <p class="mt-1 text-sm leading-relaxed text-[#5d594d]" data-hours-state>Zeiten können wetter- und saisonbedingt abweichen.</p>
-          </div>
-          <div class="mt-5 grid gap-2 text-sm font-semibold text-[#253026]">
-            {d.oeffnungszeiten.map(([tag, zeit]) => (
-              <div class="flex items-center justify-between rounded-2xl bg-[#fffdf6] px-4 py-3 ring-1 ring-[#253026]/8">
-                <span>{tag}</span>
-                <span class="text-[#b24b25]">{zeit}</span>
-              </div>
-            ))}
-          </div>
-          <p class="mt-5 leading-relaxed text-[#5d594d]">
-            Gerade bei Sonne, Ferien oder Wetterwechsel: kurz anrufen, dann weißt du es sicher.
-          </p>
-          <a href={d.telHref} class="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-[#315949]/30 px-5 py-2.5 text-sm font-semibold text-[#315949] transition hover:bg-[#315949]/10">
-            <span class="size-2 rounded-full bg-[#315949]"></span> {d.tel}
-          </a>
-        </div>
-        <div class="flex flex-col justify-center rounded-[1.5rem] bg-[#f4e7c9] p-8 text-center ring-1 ring-[#253026]/8">
-          <div class="text-[#c6943a]">★★★★★</div>
-          <div class="ds mt-2 text-6xl font-black">{d.rating}</div>
-          <p class="mt-1 text-[#5d594d]">aus {d.reviews} Google-Bewertungen</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ / Answer Engine Optimierung -->
-    <section id="faq" data-reveal class="border-y border-[#253026]/10 bg-[#fffdf6]">
-      <div class="mx-auto grid max-w-6xl gap-8 px-5 py-16 lg:grid-cols-[0.72fr_1.28fr]">
-        <div>
-          <p class="text-xs font-extrabold tracking-[0.24em] text-[#b24b25] uppercase">Kurz beantwortet</p>
-          <h2 class="ds mt-3 text-4xl font-semibold sm:text-5xl">Häufige Fragen.</h2>
-          <p class="mt-4 leading-relaxed text-[#5d594d]">
-            Alles Wichtige vor dem kurzen Besuch — draußen sitzen, Waffeln, Zeiten und Anruf.
-          </p>
-        </div>
-        <div class="grid gap-3">
-          {d.faq.map(([question, answer], i) => (
-            <details class="group rounded-[1.25rem] border border-[#253026]/10 bg-white/70 p-5 shadow-[0_18px_36px_-30px_rgba(37,48,38,.55)] open:border-[#7eb6c9]/55" open={i === 0}>
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-bold text-[#253026] [&::-webkit-details-marker]:hidden">
-                <span>{question}</span>
-                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-[#fff8ea] text-[#b24b25] transition group-open:rotate-45">+</span>
-              </summary>
-              <p class="mt-4 leading-relaxed text-[#5d594d]">{answer}</p>
-            </details>
+    <section class="hours-section" data-reveal>
+      <div class="hours-card">
+        <p class="overline">Öffnungszeiten</p>
+        <h2>Heute kurz vorbeikommen?</h2>
+        <div class="hours-list">
+          {d.oeffnungszeiten.map(([tag, zeit]) => (
+            <div><span>{tag}</span><strong>{zeit}</strong></div>
           ))}
         </div>
+        <p>Zeiten können wetter- und saisonbedingt abweichen — kurz anrufen ist am sichersten.</p>
+        <a href={d.telHref}>{d.tel}</a>
+      </div>
+      <div class="rating-card">
+        <span>★★★★★</span>
+        <strong>{d.rating}</strong>
+        <p>aus {d.reviews} Google-Bewertungen</p>
       </div>
     </section>
 
-    <!-- Kontakt -->
-    <section id="kontakt" class="relative isolate overflow-hidden bg-[#315949] text-[#fff8ea]">
-      <div class="shore pointer-events-none absolute inset-x-0 top-0 h-24 opacity-35"></div>
-      <div class="relative mx-auto grid max-w-6xl gap-8 px-5 py-16 sm:grid-cols-2">
+    <section id="faq" class="faq-section" data-reveal>
+      <div class="section-heading split-heading">
         <div>
-          <h2 class="ds text-4xl font-semibold">Komm vorbei.</h2>
-          <dl class="mt-7 space-y-4 text-lg">
-            <div><dt class="text-xs tracking-[0.2em] text-[#ffd6a0] uppercase">Adresse</dt><dd class="mt-1">{d.adresse}</dd></div>
-            <div><dt class="text-xs tracking-[0.2em] text-[#ffd6a0] uppercase">Telefon</dt><dd class="mt-1"><a href={d.telHref} class="hover:text-[#ffd6a0]">{d.tel}</a></dd></div>
-          </dl>
-          <a href={d.mapsUrl} target="_blank" rel="noopener" class="mt-7 inline-block rounded-full bg-[#b24b25] px-7 py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#c25a2a]">Route öffnen</a>
+          <p class="overline">Kurz beantwortet</p>
+          <h2>Vor dem Besuch.</h2>
         </div>
-        <div class="rounded-[1.5rem] bg-white/8 p-7 ring-1 ring-white/12">
-          <p class="text-xs tracking-[0.2em] text-[#ffd6a0] uppercase">Eis &amp; Bistro</p>
-          <p class="mt-4 leading-relaxed text-[#f3ead7]">
-            Gelato, Spaghettieis und warme Küche — mitten in Wiesloch, mit Plätzen draußen.
-            Erst ein Teller Pasta, dann der Eisbecher: alles an einem Ort.
-          </p>
-          <p class="mt-5 text-sm text-[#f3ead7]/75">Route öffnen, kurz anrufen und direkt vorbeischauen.</p>
-        </div>
+        <p>Die Antworten bleiben bewusst praktisch: draußen sitzen, Waffeln, Zeiten, kurz anrufen.</p>
       </div>
-      <div class="relative flex flex-col items-center gap-2 pb-9">
-        <p class="ds text-2xl font-semibold">Dolomiti</p>
-        <p class="text-center text-xs text-[#fff8ea]/55">{d.adresse} · Inhaber {d.inhaber}</p>
-        <p class="text-center text-xs text-[#fff8ea]/35">NURAC Konzeptvorschau · Fotos, Zeiten, Impressum &amp; Datenschutz vor Livegang final abstimmen</p>
+      <div class="faq-list">
+        {d.faq.map(([question, answer], i) => (
+          <details open={i === 0}>
+            <summary>{question}<span>+</span></summary>
+            <p>{answer}</p>
+          </details>
+        ))}
       </div>
     </section>
 
-    <!-- Sticky CTA (mobile) -->
-    <div class="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-[#253026]/10 bg-[#fff8ea]/95 p-2.5 backdrop-blur sm:hidden">
-      <a href={d.telHref} class="flex-1 rounded-full bg-[#b24b25] py-3 text-center font-semibold text-white">Anrufen</a>
-      <a href={d.mapsUrl} target="_blank" rel="noopener" class="flex-1 rounded-full border border-[#253026]/20 py-3 text-center font-semibold">Route</a>
+    <footer id="kontakt" class="contact-section">
+      <div>
+        <p class="overline">Dolomiti Wiesloch</p>
+        <h2>Komm vorbei.</h2>
+        <dl>
+          <div><dt>Adresse</dt><dd>{d.adresse}</dd></div>
+          <div><dt>Telefon</dt><dd><a href={d.telHref}>{d.tel}</a></dd></div>
+        </dl>
+        <div class="footer-actions">
+          <a href={d.mapsUrl} target="_blank" rel="noopener">Route öffnen</a>
+          <a href={d.telHref}>Anrufen</a>
+        </div>
+      </div>
+      <div class="footer-note">
+        <strong>Dolomiti</strong>
+        <span>{d.adresse} · Inhaber {d.inhaber}</span>
+        <small>NURAC Konzeptvorschau · Fotos, Zeiten, Impressum &amp; Datenschutz vor Livegang final abstimmen</small>
+      </div>
+    </footer>
+
+    <div class="mobile-cta" aria-label="Schnelle Aktionen mobil">
+      <a href={d.telHref}>Anrufen</a>
+      <a href={d.mapsUrl} target="_blank" rel="noopener">Route</a>
     </div>
   </main>
 
   <style>
-    .ds { font-family: "Fraunces", Georgia, serif; }
-    .font800 { font-weight: 800; }
-    .wave {
+    :root {
+      --ink: #243026;
+      --muted: #665f50;
+      --cream: #fff5df;
+      --paper: #fffaf0;
+      --gelato: #f1dfb9;
+      --terracotta: #bb4e24;
+      --terracotta-dark: #963617;
+      --mint: #6aa6a0;
+      --blue: #61aeca;
+      --green: #295f4c;
+      --shadow: 0 28px 70px -42px rgba(36, 48, 38, .75);
+    }
+
+    .dolomiti-page {
+      min-height: 100svh;
+      overflow-x: hidden;
       background:
-        radial-gradient(circle at 12% 38%, rgba(126, 182, 201, .22) 0 9rem, transparent 9.1rem),
-        radial-gradient(circle at 86% 14%, rgba(255, 214, 107, .32) 0 11rem, transparent 11.1rem),
-        linear-gradient(180deg, rgba(126,182,201,.18), transparent 72%);
+        radial-gradient(circle at 9% 10%, rgba(97,174,202,.18) 0 11rem, transparent 11.2rem),
+        radial-gradient(circle at 90% 4%, rgba(255,213,104,.38) 0 13rem, transparent 13.2rem),
+        linear-gradient(90deg, rgba(36,48,38,.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(36,48,38,.035) 1px, transparent 1px),
+        var(--cream);
+      background-size: auto, auto, 42px 42px, 42px 42px, auto;
+      color: var(--ink);
+      font-family: Inter, system-ui, sans-serif;
+      padding-bottom: 4.4rem;
     }
-    .shore {
-      background: radial-gradient(120% 90% at 50% -40%, rgba(255,255,255,.92), transparent 64%);
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid rgba(36,48,38,.14);
+      background: rgba(255,245,223,.88);
+      backdrop-filter: blur(18px);
     }
-    .sun-disc { animation: sun-float 9s ease-in-out infinite; }
-    .today-badge { position: relative; overflow: hidden; }
-    .today-badge::after {
+
+    .site-header::after {
       content: "";
-      position: absolute;
-      inset: auto -18% -70% 42%;
-      height: 120%;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(255,214,107,.34), transparent 62%);
-      pointer-events: none;
+      display: block;
+      height: .55rem;
+      background: repeating-linear-gradient(90deg, var(--terracotta) 0 2.2rem, #fff1d1 2.2rem 4.4rem, var(--green) 4.4rem 6.6rem, #fff1d1 6.6rem 8.8rem);
+      opacity: .9;
     }
-    .today-badge.is-open .live-dot { background: #315949; }
-    .today-badge.is-closed .live-dot { background: #b24b25; }
-    .live-dot { animation: live-pulse 2.3s ease-in-out infinite; }
-    .moment-card { position: relative; overflow: hidden; }
-    .moment-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: .35rem;
-      background: linear-gradient(180deg, #7eb6c9, #ffd66b, #b24b25);
-      opacity: .78;
-    }
-    .carousel { border-radius: 2rem; }
-    .carousel-track {
+
+    .header-inner {
       display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      overscroll-behavior-x: contain;
-      border-radius: 2rem;
-      border: 1px solid rgba(37,48,38,.12);
-      background: #f4e7c9;
-      box-shadow: 0 24px 70px -28px rgba(37,48,38,.55);
-      scrollbar-width: none;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: .8rem 1.25rem;
+      gap: 1rem;
     }
-    .carousel-track::-webkit-scrollbar { display: none; }
-    .carousel-slide {
-      position: relative;
-      flex: 0 0 100%;
-      height: clamp(360px, 52vw, 610px);
-      scroll-snap-align: start;
-      overflow: hidden;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 2.4rem;
+      height: 2.4rem;
+      place-items: center;
+      border: 2px solid rgba(36,48,38,.16);
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--terracotta);
+      font-family: Fraunces, Georgia, serif;
+      font-weight: 900;
+      box-shadow: 0 12px 26px -20px rgba(0,0,0,.5);
+    }
+
+    .brand-name {
+      display: block;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+
+    .brand-sub {
+      display: block;
+      margin-top: .1rem;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+      font-size: .88rem;
+      font-weight: 800;
+    }
+
+    .nav a,
+    .call-pill,
+    .hero-actions a,
+    .footer-actions a,
+    .hours-card a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav a:hover { color: var(--terracotta); }
+
+    .call-pill,
+    .primary-action,
+    .secondary-action,
+    .footer-actions a,
+    .mobile-cta a {
+      border-radius: 999px;
+      font-weight: 900;
+    }
+
+    .call-pill,
+    .primary-action,
+    .footer-actions a:first-child,
+    .mobile-cta a:first-child {
+      background: var(--terracotta);
+      color: white;
+      box-shadow: 0 18px 34px -20px rgba(187,78,36,.9);
+    }
+
+    .call-pill { padding: .7rem 1rem; font-size: .88rem; }
+
+    .hero-section { border-bottom: 1px solid rgba(36,48,38,.13); }
+
+    .hero-grid {
+      display: grid;
+      max-width: 72rem;
+      margin: 0 auto;
+      grid-template-columns: minmax(0, .92fr) minmax(20rem, 1.08fr);
+      align-items: center;
+      gap: 3.5rem;
+      padding: clamp(3.4rem, 6vw, 6.8rem) 1.25rem clamp(3rem, 6vw, 5.5rem);
+    }
+
+    .overline {
       margin: 0;
-      background: #f4e7c9;
+      color: var(--terracotta);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .24em;
+      text-transform: uppercase;
     }
-    .carousel-slide::after {
+
+    .hero-copy h1,
+    .section-heading h2,
+    .team-copy h2,
+    .menu-intro h2,
+    .hours-card h2,
+    .contact-section h2 {
+      font-family: Fraunces, Georgia, serif;
+      letter-spacing: -.055em;
+    }
+
+    .hero-copy h1 {
+      max-width: 10ch;
+      margin: 1.05rem 0 0;
+      font-size: clamp(3.8rem, 8.4vw, 7.2rem);
+      font-weight: 900;
+      line-height: .78;
+      text-wrap: balance;
+    }
+
+    .hero-copy h1 span {
+      display: block;
+      color: var(--blue);
+      font-style: italic;
+    }
+
+    .lead {
+      max-width: 36rem;
+      margin: 1.6rem 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+      line-height: 1.72;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+      margin-top: 1.8rem;
+    }
+
+    .hero-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.35rem;
+      padding: 0 1.6rem;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .primary-action:hover,
+    .call-pill:hover,
+    .footer-actions a:first-child:hover { background: var(--terracotta-dark); transform: translateY(-1px); }
+
+    .secondary-action,
+    .footer-actions a:last-child,
+    .mobile-cta a:last-child {
+      border: 1px solid rgba(36,48,38,.18);
+      background: rgba(255,250,240,.76);
+      color: var(--ink);
+    }
+
+    .secondary-action:hover { transform: translateY(-1px); border-color: rgba(187,78,36,.45); }
+
+    .counter-note {
+      position: relative;
+      display: grid;
+      max-width: 31rem;
+      margin-top: 1.6rem;
+      gap: .35rem;
+      border: 1px dashed rgba(36,48,38,.24);
+      border-radius: 1.1rem;
+      background: rgba(255,250,240,.72);
+      padding: 1rem 1.15rem;
+      box-shadow: 0 20px 45px -35px rgba(36,48,38,.8);
+      transform: rotate(-.6deg);
+    }
+
+    .counter-note::before {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 48%, rgba(0,0,0,.22));
-      pointer-events: none;
+      inset: -.55rem auto auto 2rem;
+      width: 5rem;
+      height: 1rem;
+      background: rgba(255,214,107,.55);
+      transform: rotate(2deg);
     }
-    .carousel-slide figcaption {
+
+    .note-label {
+      color: var(--terracotta);
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .counter-note strong { font-size: 1.05rem; }
+    .counter-note span:last-child { color: var(--muted); font-size: .9rem; line-height: 1.45; }
+
+    .hero-collage {
+      position: relative;
+      min-height: clamp(34rem, 48vw, 42rem);
+    }
+
+    .photo-frame {
+      position: absolute;
+      margin: 0;
+      overflow: hidden;
+      border: .7rem solid var(--paper);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .photo-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-frame figcaption,
+    .gallery-slide figcaption {
       position: absolute;
       left: 1rem;
       bottom: 1rem;
       z-index: 2;
       border-radius: 999px;
-      background: rgba(255,248,234,.94);
-      padding: .55rem 1rem;
-      color: #b24b25;
-      font-weight: 800;
-      box-shadow: 0 10px 30px -18px rgba(0,0,0,.55);
+      background: rgba(255,250,240,.94);
+      padding: .55rem .9rem;
+      color: var(--terracotta);
+      font-size: .88rem;
+      font-weight: 900;
+      box-shadow: 0 15px 34px -24px rgba(0,0,0,.7);
     }
-    .carousel-btn {
+
+    .main-photo {
+      inset: 2.2rem 0 auto 2rem;
+      width: min(38rem, 85%);
+      height: clamp(23rem, 32vw, 30rem);
+      border-radius: 2.1rem;
+      transform: rotate(1.3deg);
+    }
+
+    .sign-photo {
+      right: .4rem;
+      bottom: 2.6rem;
+      width: min(16rem, 38%);
+      height: 18.5rem;
+      border-radius: 1.4rem;
+      transform: rotate(-5deg);
+      z-index: 2;
+    }
+
+    .gelato-ticket {
+      position: absolute;
+      left: 0;
+      bottom: 1.2rem;
+      z-index: 3;
+      display: grid;
+      gap: .25rem;
+      width: min(17rem, 42%);
+      border: 1px solid rgba(36,48,38,.18);
+      border-radius: 1.2rem;
+      background: var(--green);
+      color: #fff8ea;
+      padding: 1.1rem;
+      box-shadow: 0 30px 60px -36px rgba(0,0,0,.8);
+      transform: rotate(3deg);
+    }
+
+    .gelato-ticket span { color: #ffdba3; font-size: .75rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+    .gelato-ticket strong { font-family: Fraunces, Georgia, serif; font-size: 1.55rem; line-height: 1; }
+    .gelato-ticket small { color: rgba(255,248,234,.76); }
+
+    .flavour-strip {
+      border-block: 1px solid rgba(36,48,38,.13);
+      background: var(--gelato);
+      overflow: hidden;
+      padding: .8rem 0;
+    }
+
+    .flavour-track {
+      display: flex;
+      width: max-content;
+      gap: 1.45rem;
+      animation: marquee 38s linear infinite;
+    }
+
+    .flavour {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--ink);
+      font-family: Fraunces, Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .flavour::after { content: "◆"; color: #d5a073; font-size: 1rem; }
+    .flavour i { width: .75rem; height: .75rem; border-radius: 50%; background: var(--dot); box-shadow: inset 0 0 0 1px rgba(36,48,38,.14); }
+
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .photo-section,
+    .visit-section,
+    .menu-section,
+    .faq-section,
+    .hours-section,
+    .team-section {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: clamp(3.5rem, 6vw, 5.5rem) 1.25rem;
+    }
+
+    .section-heading {
+      max-width: 42rem;
+      margin-bottom: 2rem;
+    }
+
+    .split-heading {
+      display: grid;
+      max-width: none;
+      grid-template-columns: minmax(0, .95fr) minmax(16rem, .75fr);
+      align-items: end;
+      gap: 2rem;
+    }
+
+    .section-heading h2,
+    .team-copy h2,
+    .menu-intro h2,
+    .hours-card h2,
+    .contact-section h2 {
+      margin: .65rem 0 0;
+      font-size: clamp(2.5rem, 5vw, 4.6rem);
+      font-weight: 900;
+      line-height: .9;
+      text-wrap: balance;
+    }
+
+    .section-heading p:last-child,
+    .team-copy p,
+    .menu-intro p,
+    .hours-card p,
+    .contact-section dd,
+    .footer-note {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .story-gallery {
+      position: relative;
+      border-radius: 2.2rem;
+      background: rgba(255,250,240,.62);
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      border: .55rem solid var(--paper);
+      border-radius: 2.2rem;
+      scrollbar-width: none;
+    }
+
+    .gallery-track::-webkit-scrollbar { display: none; }
+
+    .gallery-slide {
+      position: relative;
+      flex: 0 0 100%;
+      height: clamp(24rem, 56vw, 38rem);
+      margin: 0;
+      scroll-snap-align: start;
+      overflow: hidden;
+      background: var(--gelato);
+    }
+
+    .gallery-slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.27));
+      pointer-events: none;
+    }
+
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; }
+
+    .gallery-arrow {
       position: absolute;
       top: 50%;
       z-index: 3;
       display: grid;
-      width: 2.7rem;
-      height: 2.7rem;
+      width: 3rem;
+      height: 3rem;
       place-items: center;
-      transform: translateY(-50%);
-      border-radius: 999px;
-      background: rgba(255,248,234,.92);
-      color: #253026;
-      font-size: 2rem;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,250,240,.94);
+      color: var(--ink);
+      font-size: 2.2rem;
       line-height: 1;
-      box-shadow: 0 14px 32px -18px rgba(0,0,0,.55);
-      opacity: .94;
-      transition: transform .18s ease, opacity .18s ease;
+      transform: translateY(-50%);
+      box-shadow: 0 18px 36px -24px rgba(0,0,0,.75);
+      cursor: pointer;
     }
-    .carousel-btn:hover { opacity: 1; transform: translateY(-50%) scale(1.04); }
-    .carousel-dots {
-      position: absolute;
-      left: 50%;
-      bottom: .85rem;
-      z-index: 3;
+
+    .gallery-arrow.prev { left: 1.15rem; }
+    .gallery-arrow.next { right: 1.15rem; }
+
+    .gallery-dots {
       display: flex;
+      justify-content: center;
       gap: .45rem;
-      transform: translateX(-50%);
-      border-radius: 999px;
-      background: rgba(37,48,38,.22);
-      padding: .35rem;
-      backdrop-filter: blur(8px);
+      padding: 1rem 0 0;
     }
-    .carousel-dots button {
-      width: .58rem;
-      height: .58rem;
+
+    .gallery-dots button {
+      width: .62rem;
+      height: .62rem;
+      border: 0;
       border-radius: 999px;
-      background: rgba(255,248,234,.62);
+      background: rgba(36,48,38,.22);
+      cursor: pointer;
       transition: width .18s ease, background .18s ease;
     }
-    .carousel-dots button.is-active { width: 1.35rem; background: #fff8ea; }
-    .marquee { overflow: hidden; }
-    .marquee-track { display: flex; width: max-content; gap: 0; animation: marquee 34s linear infinite; }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .quick-facts > div { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
-    .quick-facts > div:hover { transform: translateY(-2px); border-color: rgba(126,182,201,.5); box-shadow: 0 20px 38px -30px rgba(47,109,128,.7); }
-    [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-    [data-reveal].in { opacity: 1; transform: none; }
-    .hero-stagger > * { animation: rise-in .62s ease both; }
-    .hero-stagger > *:nth-child(2) { animation-delay: .05s; }
-    .hero-stagger > *:nth-child(3) { animation-delay: .10s; }
-    .hero-stagger > *:nth-child(4) { animation-delay: .15s; }
-    .hero-stagger > *:nth-child(5) { animation-delay: .20s; }
-    .hero-stagger > *:nth-child(6) { animation-delay: .25s; }
-    @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-    @keyframes sun-float { 0%, 100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(-1rem,.8rem,0) scale(1.04); } }
-    @keyframes live-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(49,89,73,.32); } 50% { box-shadow: 0 0 0 .5rem rgba(49,89,73,0); } }
-    @media (max-width: 640px) {
-      .carousel-slide { height: 315px; }
-      .carousel-btn { display: none; }
+
+    .gallery-dots button.is-active { width: 1.7rem; background: var(--terracotta); }
+
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
     }
+
+    .scene-card {
+      position: relative;
+      min-height: 15rem;
+      border: 1px solid rgba(36,48,38,.14);
+      background: var(--paper);
+      padding: 1.35rem;
+      box-shadow: 0 24px 48px -38px rgba(36,48,38,.9);
+    }
+
+    .scene-card::before {
+      content: "";
+      position: absolute;
+      inset: -.6rem 2rem auto;
+      height: 1rem;
+      background: rgba(255,214,107,.55);
+      transform: rotate(-2deg);
+    }
+
+    .scene-card:nth-child(2) { transform: rotate(1.2deg); }
+    .scene-card:nth-child(3) { transform: rotate(-.8deg); }
+    .scene-card span { color: var(--terracotta); font-weight: 900; letter-spacing: .16em; }
+    .scene-card h3 { margin: 2.2rem 0 .8rem; font-family: Fraunces, Georgia, serif; font-size: 2.15rem; line-height: .95; }
+    .scene-card p { margin: 0; color: var(--muted); line-height: 1.65; }
+
+    .team-section {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .team-photo {
+      margin: 0;
+      overflow: hidden;
+      border: .65rem solid var(--paper);
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+      transform: rotate(-1.3deg);
+    }
+
+    .team-photo img { display: block; width: 100%; aspect-ratio: 1 / .82; object-fit: cover; }
+
+    .team-copy {
+      border-left: .45rem solid var(--terracotta);
+      background: rgba(255,250,240,.64);
+      padding: 2rem;
+    }
+
+    .signature { margin-top: 1.4rem; color: var(--terracotta); font-family: Fraunces, Georgia, serif; font-size: 2.1rem; font-style: italic; font-weight: 650; }
+
+    .menu-board {
+      display: grid;
+      grid-template-columns: .7fr 1.3fr;
+      gap: 2rem;
+      border-radius: 2rem;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.04), transparent 32%),
+        var(--green);
+      color: #fff8ea;
+      padding: clamp(1.3rem, 4vw, 3rem);
+      box-shadow: var(--shadow);
+    }
+
+    .menu-board .overline { color: #ffdba3; }
+    .menu-intro p { color: rgba(255,248,234,.72); }
+
+    .menu-list { display: grid; gap: .4rem; }
+
+    .menu-row {
+      display: grid;
+      grid-template-columns: 13rem minmax(0,1fr);
+      gap: 1.2rem;
+      border-bottom: 1px dashed rgba(255,248,234,.28);
+      padding: .95rem 0;
+    }
+
+    .menu-row strong { font-family: Fraunces, Georgia, serif; font-size: 1.35rem; line-height: 1.05; color: #ffdba3; }
+    .menu-row span { color: rgba(255,248,234,.82); line-height: 1.55; }
+
+    .hours-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(15rem, .55fr);
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .hours-card,
+    .rating-card,
+    .faq-list details {
+      border: 1px solid rgba(36,48,38,.13);
+      border-radius: 1.6rem;
+      background: rgba(255,250,240,.7);
+      box-shadow: 0 24px 50px -42px rgba(36,48,38,.8);
+    }
+
+    .hours-card { padding: 2rem; }
+    .hours-list { display: grid; gap: .7rem; margin: 1.4rem 0; }
+    .hours-list div { display: flex; justify-content: space-between; gap: 1rem; border-radius: 1rem; background: var(--paper); padding: .9rem 1rem; }
+    .hours-list span { color: var(--muted); font-weight: 800; }
+    .hours-list strong { color: var(--terracotta); }
+    .hours-card a { display: inline-flex; margin-top: .5rem; color: var(--green); font-weight: 900; }
+
+    .rating-card {
+      display: grid;
+      place-items: center;
+      align-content: center;
+      padding: 2rem;
+      text-align: center;
+      background: var(--gelato);
+    }
+
+    .rating-card span { color: #c58d2d; letter-spacing: .12em; }
+    .rating-card strong { font-family: Fraunces, Georgia, serif; font-size: 5.4rem; line-height: .9; }
+    .rating-card p { color: var(--muted); }
+
+    .faq-list { display: grid; gap: .8rem; }
+    .faq-list details { padding: 1.15rem 1.25rem; }
+    .faq-list summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; list-style: none; font-weight: 900; }
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary span { display: grid; width: 2rem; height: 2rem; place-items: center; border-radius: 50%; background: var(--cream); color: var(--terracotta); transition: transform .18s ease; }
+    .faq-list details[open] summary span { transform: rotate(45deg); }
+    .faq-list p { margin: 1rem 0 0; color: var(--muted); line-height: 1.7; }
+
+    .contact-section {
+      display: grid;
+      grid-template-columns: 1fr .9fr;
+      gap: 2rem;
+      background: var(--green);
+      color: #fff8ea;
+      padding: clamp(3.5rem, 7vw, 5rem) max(1.25rem, calc((100vw - 72rem) / 2));
+    }
+
+    .contact-section .overline { color: #ffdba3; }
+    .contact-section dl { display: grid; gap: 1rem; margin: 2rem 0 0; }
+    .contact-section dt { color: #ffdba3; font-size: .76rem; font-weight: 900; letter-spacing: .2em; text-transform: uppercase; }
+    .contact-section dd { margin: .25rem 0 0; color: rgba(255,248,234,.9); font-size: 1.15rem; }
+    .contact-section a { color: inherit; }
+    .footer-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.6rem; }
+    .footer-actions a { display: inline-flex; padding: .9rem 1.25rem; }
+    .footer-note { display: grid; align-content: end; gap: .55rem; color: rgba(255,248,234,.62); }
+    .footer-note strong { color: #fff8ea; font-family: Fraunces, Georgia, serif; font-size: 2.3rem; }
+    .footer-note small { color: rgba(255,248,234,.38); }
+
+    .mobile-cta {
+      position: fixed;
+      inset: auto 0 0;
+      z-index: 50;
+      display: none;
+      gap: .5rem;
+      border-top: 1px solid rgba(36,48,38,.13);
+      background: rgba(255,245,223,.95);
+      padding: .65rem;
+      backdrop-filter: blur(14px);
+    }
+
+    .mobile-cta a { flex: 1; padding: .9rem .75rem; text-align: center; text-decoration: none; }
+
+    .js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .62s ease, transform .62s ease; }
+    .js [data-reveal].in { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .nav { display: none; }
+      .hero-grid,
+      .split-heading,
+      .team-section,
+      .menu-board,
+      .hours-section,
+      .contact-section {
+        grid-template-columns: 1fr;
+      }
+      .hero-grid { gap: 2rem; padding-top: 2.4rem; }
+      .hero-copy h1 { max-width: 9ch; }
+      .hero-collage { min-height: 30rem; }
+      .main-photo { left: 0; width: 88%; height: 21.5rem; }
+      .sign-photo { width: 11rem; height: 13rem; bottom: 1.8rem; }
+      .gelato-ticket { width: 12.5rem; }
+      .scene-grid { grid-template-columns: 1fr; }
+      .scene-card:nth-child(n) { transform: none; }
+      .menu-row { grid-template-columns: 1fr; gap: .3rem; }
+      .mobile-cta { display: flex; }
+    }
+
+    @media (max-width: 560px) {
+      .brand-sub { display: none; }
+      .brand-name { font-size: 1.35rem; }
+      .call-pill { display: none; }
+      .hero-copy h1 { font-size: clamp(3.55rem, 18vw, 5rem); }
+      .lead { font-size: 1rem; line-height: 1.62; }
+      .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .hero-actions a { min-height: 3rem; padding-inline: .8rem; font-size: .9rem; }
+      .hero-collage { min-height: 25rem; }
+      .main-photo { top: 1rem; height: 18rem; border-width: .45rem; border-radius: 1.35rem; }
+      .sign-photo { right: 0; width: 8.6rem; height: 10.2rem; border-width: .4rem; }
+      .gelato-ticket { left: .2rem; width: 11.2rem; padding: .85rem; }
+      .gelato-ticket strong { font-size: 1.25rem; }
+      .gallery-slide { height: 21rem; }
+      .gallery-arrow { display: none; }
+      .flavour { font-size: 1.25rem; }
+      .section-heading h2,
+      .team-copy h2,
+      .menu-intro h2,
+      .hours-card h2,
+      .contact-section h2 { font-size: clamp(2.25rem, 12vw, 3.2rem); }
+      .team-copy { padding: 1.35rem; }
+      .photo-section,
+      .visit-section,
+      .menu-section,
+      .faq-section,
+      .hours-section,
+      .team-section { padding-block: 3.4rem; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .marquee-track { animation: none; }
-      .sun-disc, .live-dot { animation: none; }
-      [data-reveal] { opacity: 1; transform: none; transition: none; }
-      .hero-stagger > * { animation: none; }
-      .carousel-track { scroll-behavior: auto; }
+      .flavour-track { animation: none; }
+      .gallery-track { scroll-behavior: auto; }
+      .js [data-reveal] { opacity: 1; transform: none; transition: none; }
     }
   </style>
 
   <script>
+    document.documentElement.classList.add("js");
+
     document.querySelectorAll("[data-carousel]").forEach((carousel) => {
       const track = carousel.querySelector("[data-track]");
       const slides = Array.from(carousel.querySelectorAll("[data-slide]"));
@@ -476,8 +1001,6 @@ const schema = {
       const next = carousel.querySelector("[data-next]");
       if (!track || slides.length === 0) return;
       let raf = 0;
-      let autoTimer = 0;
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const currentIndex = () => Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
       const setActive = () => {
         const active = currentIndex();
@@ -487,24 +1010,15 @@ const schema = {
         const target = (index + slides.length) % slides.length;
         track.scrollTo({ left: target * track.clientWidth, behavior: "smooth" });
       };
-      const stopAuto = () => window.clearInterval(autoTimer);
-      const goManual = (index) => { stopAuto(); go(index); };
-      prev?.addEventListener("click", () => goManual(currentIndex() - 1));
-      next?.addEventListener("click", () => goManual(currentIndex() + 1));
-      dots.forEach((dot, i) => dot.addEventListener("click", () => goManual(i)));
-      track.addEventListener("pointerdown", stopAuto, { passive: true });
-      track.addEventListener("wheel", stopAuto, { passive: true });
+      prev?.addEventListener("click", () => go(currentIndex() - 1));
+      next?.addEventListener("click", () => go(currentIndex() + 1));
+      dots.forEach((dot, i) => dot.addEventListener("click", () => go(i)));
       track.addEventListener("scroll", () => {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(setActive);
       }, { passive: true });
       window.addEventListener("resize", setActive, { passive: true });
       setActive();
-      if (!reducedMotion && slides.length > 1) {
-        autoTimer = window.setInterval(() => {
-          if (!document.hidden) go(currentIndex() + 1);
-        }, 6200);
-      }
     });
 
     const setOpeningCue = () => {
@@ -524,8 +1038,8 @@ const schema = {
         : beforeOpen
           ? `Öffnet voraussichtlich ab ${sunday ? "10:00" : "09:00"} — kurz anrufen, wenn du sicher gehen willst.`
           : "Für heute wahrscheinlich vorbei — morgen wieder Sommerzeiten. Kurz anrufen, wenn du sicher gehen willst.";
-      document.querySelectorAll("[data-today-hours], [data-hours-today]").forEach((el) => { el.textContent = label; });
-      document.querySelectorAll("[data-open-state], [data-hours-state]").forEach((el) => { el.textContent = state; });
+      document.querySelectorAll("[data-today-hours]").forEach((el) => { el.textContent = label; });
+      document.querySelectorAll("[data-open-state]").forEach((el) => { el.textContent = state; });
       badges.forEach((badge) => {
         badge.classList.toggle("is-open", openNow);
         badge.classList.toggle("is-closed", !openNow);
@@ -534,7 +1048,12 @@ const schema = {
     setOpeningCue();
 
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
     }, { threshold: 0.12 });
     document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
   </script>
